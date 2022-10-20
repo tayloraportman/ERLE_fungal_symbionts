@@ -1,0 +1,62 @@
+---
+title: "Caffeic Acid Germination"
+author: "Taylor A Portman"
+date: "2022-09-26"
+output: html_document
+---
+Caffeic Acid Germination Experiment
+
+Objective:
+Investigate the role of CA on the germination of native and invasive grasses common to the SRER.
+
+Hypothesis:
+Caffeic acid produced by endophytic fungi associated with the invasive grass E. lehmanniana decreases the germination of native grasses while increasing the germination of the invasive grass.
+
+Plant seeds used: Eragrostis lehmanniana (ERLE), Eragrostis intermedia (ERIN), Bouteloua curtipendula (BOCU), Digitaria california (DICA), Leptachola dubia (LEDU)
+
+10 surface sterilized seeds of each grass species were  grown in three media treatments: control MEA media, 0.5mM Caffeic acid amended MEA media, and fungal lawns of Fusarium sp. isolate 1154 on MEA media. 
+```{r}
+library(tidyverse)
+library(ggplot2)
+setwd("/Volumes/GoogleDrive/My Drive/projects/ERLE_fungal_symbionts/R")
+dat<-read.csv("data/CaffeicAcid_SeedGermination.csv")
+```
+
+```{r}
+head(dat)
+
+dat$Germ<-dat$Day14.30Sep
+germ<-dat%>%
+  dplyr::select( Sample, Seed, Media, Germ)
+
+head(germ)
+
+means.grass <- germ %>% 
+  dplyr::group_by(Seed, .add=TRUE) %>%
+  dplyr::summarise(
+    means=mean(Germ))
+
+germ.dat<-germ%>%
+  dplyr::left_join(means.grass, by="Seed", copy=FALSE)
+
+
+germ.dat$average<- germ.dat$Germ/ germ.dat$means
+
+
+head(germ.dat) 
+
+```
+
+```{r}
+ggplot(germ.dat, aes(Seed, Germ, fill=Media))+
+  geom_boxplot()
+
+germ.dat2<-germ.dat%>%
+  dplyr::filter(Seed != "CTRL", Seed != "DICA")
+
+ggplot(germ.dat2, aes(Seed, Germ, fill=Media))+
+  geom_boxplot()
+
+```
+
+
