@@ -1,0 +1,17 @@
+FeatureID,name4plot,KEGG Pathways,Formula,MW,Comment,log2FC,pval
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Metabolic pathways,C6 H8 O3,128.04731,Downregulated,-2.01270254909511,0.002784515122717228
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Microbial metabolism in diverse environments,C6 H8 O3,128.04731,Downregulated,-2.01270254909511,0.002784515122717228
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Degradation of aromatic compounds,C6 H8 O3,128.04731,Downregulated,-2.01270254909511,0.002784515122717228
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Aminobenzoate degradation,C6 H8 O3,128.04731,Downregulated,-2.01270254909511,0.002784515122717228
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Other,C6 H8 O3,128.04731,Downregulated,-2.01270254909511,0.002784515122717228
+Feature1026,Phenacetin-peak3,Metabolic pathways,C10 H13 N O2,179.09465,Downregulated,-2.065923471472167,1.6158210014922906e-4
+Feature1026,Phenacetin-peak3,Biosynthesis of secondary metabolites,C10 H13 N O2,179.09465,Downregulated,-2.065923471472167,1.6158210014922906e-4
+Feature1026,Phenacetin-peak3,2-Oxocarboxylic acid metabolism,C10 H13 N O2,179.09465,Downregulated,-2.065923471472167,1.6158210014922906e-4
+Feature1026,Phenacetin-peak3,Biosynthesis of alkaloids derived from shikimate pathway,C10 H13 N O2,179.09465,Downregulated,-2.065923471472167,1.6158210014922906e-4
+Feature1026,Phenacetin-peak3,"Phenylalanine, tyrosine and tryptophan biosynthesis",C10 H13 N O2,179.09465,Downregulated,-2.065923471472167,1.6158210014922906e-4
+Feature1026,Phenacetin-peak3,Other,C10 H13 N O2,179.09465,Downregulated,-2.065923471472167,1.6158210014922906e-4
+Feature0736,"N-(3-methoxyphenyl)-N'-[2-(2-methyl-4,5-dihydro-1H-imidazol-1-yl)ethyl]urea-peak2",Metabolic pathways,C14 H20 N4 O2,276.15866,Downregulated,-2.0325162384442375,0.0012964864955809087
+Feature0736,"N-(3-methoxyphenyl)-N'-[2-(2-methyl-4,5-dihydro-1H-imidazol-1-yl)ethyl]urea-peak2",Other,C14 H20 N4 O2,276.15866,Downregulated,-2.0325162384442375,0.0012964864955809087
+Feature0574,Feature0574,NA,C11 H19 N3 O4,257.13761,Upregulated,3.9150456468196153,0.02165110030225972
+Feature0039,Feature0039,NA,C26 H48 N2 O6,484.35117,Upregulated,2.4201433152117615,0.038255485472449856
+Feature0004,"3,4-Dihydroxy-7-methoxy-2,2,6-trimethyl-2,3,4,6-tetrahydro-5H-pyrano[3,2-c]quinolin-5-one",NA,C16 H19 N O5,305.12642,Downregulated,-2.9220875912715276,0.002505775640121551

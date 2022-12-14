@@ -1,0 +1,48 @@
+FeatureID,name4plot,KEGG Pathways,Formula,MW,Comment,log2FC,pval
+Feature1649,NP-013538-peak3,NA,C12 H16 O8,288.08457,Upregulated,2.330612570069503,2.8095868777724774e-4
+Feature1574,diphthinate,NA,C13 H22 N4 O4,298.16416,Upregulated,10.196134364247765,0.012350931131868814
+Feature1569,Adenine,Metabolic pathways,C5 H5 N5,135.05448,Upregulated,4.865299738366278,0.015845028129944295
+Feature1569,Adenine,Biosynthesis of secondary metabolites,C5 H5 N5,135.05448,Upregulated,4.865299738366278,0.015845028129944295
+Feature1569,Adenine,Other,C5 H5 N5,135.05448,Upregulated,4.865299738366278,0.015845028129944295
+Feature1543,"4-methoxy-6-(prop-2-en-1-yl)-2H-1,3-benzodioxole-peak7",Biosynthesis of secondary metabolites,C11 H12 O3,192.07866,Upregulated,2.1819908547888804,0.0018363819470879922
+Feature1543,"4-methoxy-6-(prop-2-en-1-yl)-2H-1,3-benzodioxole-peak7",Microbial metabolism in diverse environments,C11 H12 O3,192.07866,Upregulated,2.1819908547888804,0.0018363819470879922
+Feature1543,"4-methoxy-6-(prop-2-en-1-yl)-2H-1,3-benzodioxole-peak7",Phenylpropanoid biosynthesis,C11 H12 O3,192.07866,Upregulated,2.1819908547888804,0.0018363819470879922
+Feature1543,"4-methoxy-6-(prop-2-en-1-yl)-2H-1,3-benzodioxole-peak7",Other,C11 H12 O3,192.07866,Upregulated,2.1819908547888804,0.0018363819470879922
+Feature1539,Guanine-peak3,Metabolic pathways,C5 H5 N5 O,151.04943,Upregulated,2.6316147399165315,0.028022119584430044
+Feature1539,Guanine-peak3,Other,C5 H5 N5 O,151.04943,Upregulated,2.6316147399165315,0.028022119584430044
+Feature1477,Feature1477,NA,C11 H20 N4 O3,256.15356,Upregulated,6.231018291995134,0.006925497606866324
+Feature1433,Feature1433,NA,C75 H89 N10 O16 P3 S,1510.53964,Upregulated,2.4519859658208865,0.01966812802352246
+Feature1431,Feature1431,NA,C15 H18 O11,374.08496,Upregulated,7.3559410146267314,0.029405194767796086
+Feature1383,"1,4-Anhydro-1-(2,4-dioxo-1,2,3,4-tetrahydro-5-pyrimidinyl)-5-O-phosphonopentitol",Metabolic pathways,C9 H13 N2 O9 P,324.03593,Downregulated,-2.059341246104816,0.015133390544903397
+Feature1383,"1,4-Anhydro-1-(2,4-dioxo-1,2,3,4-tetrahydro-5-pyrimidinyl)-5-O-phosphonopentitol",Biosynthesis of cofactors,C9 H13 N2 O9 P,324.03593,Downregulated,-2.059341246104816,0.015133390544903397
+Feature1383,"1,4-Anhydro-1-(2,4-dioxo-1,2,3,4-tetrahydro-5-pyrimidinyl)-5-O-phosphonopentitol",Other,C9 H13 N2 O9 P,324.03593,Downregulated,-2.059341246104816,0.015133390544903397
+Feature1354,"4-(Î²-D-Glucopyranosyloxy)-2,5-dimethyl-3(2H)-furanone",NA,C12 H18 O8,290.10021,Upregulated,2.100068822244926,0.03107652384913226
+Feature1310,Guanosine monophosphate,Metabolic pathways,C10 H14 N5 O8 P,363.05806,Downregulated,-2.6814446676662733,0.018303172634071007
+Feature1310,Guanosine monophosphate,Biosynthesis of cofactors,C10 H14 N5 O8 P,363.05806,Downregulated,-2.6814446676662733,0.018303172634071007
+Feature1310,Guanosine monophosphate,Biosynthesis of plant secondary metabolites,C10 H14 N5 O8 P,363.05806,Downregulated,-2.6814446676662733,0.018303172634071007
+Feature1310,Guanosine monophosphate,Other,C10 H14 N5 O8 P,363.05806,Downregulated,-2.6814446676662733,0.018303172634071007
+Feature1237,Neolinustatin,NA,C17 H29 N O11,423.17418,Upregulated,2.4497461575153845,0.02052465551289458
+Feature1137,Adenosine 5'-monophosphate,Metabolic pathways,C10 H14 N5 O7 P,347.06316,Downregulated,-3.4944296070784393,0.042547963549336924
+Feature1137,Adenosine 5'-monophosphate,Biosynthesis of secondary metabolites,C10 H14 N5 O7 P,347.06316,Downregulated,-3.4944296070784393,0.042547963549336924
+Feature1137,Adenosine 5'-monophosphate,Biosynthesis of cofactors,C10 H14 N5 O7 P,347.06316,Downregulated,-3.4944296070784393,0.042547963549336924
+Feature1137,Adenosine 5'-monophosphate,Biosynthesis of plant secondary metabolites,C10 H14 N5 O7 P,347.06316,Downregulated,-3.4944296070784393,0.042547963549336924
+Feature1137,Adenosine 5'-monophosphate,Other,C10 H14 N5 O7 P,347.06316,Downregulated,-3.4944296070784393,0.042547963549336924
+Feature1059,NP-007735,NA,C18 H24 O12,432.1269,Upregulated,7.611524816168213,0.0012814727516701147
+Feature1038,"2-(2,4-Dihydroxy-5-methoxyphenyl)-5,7-dihydroxy-6-(3-methyl-2-buten-1-yl)-2,3-dihydro-4H-chromen-4-one",Metabolic pathways,C21 H22 O7,386.13664,Upregulated,2.070657889649383,0.0025562306262978144
+Feature1038,"2-(2,4-Dihydroxy-5-methoxyphenyl)-5,7-dihydroxy-6-(3-methyl-2-buten-1-yl)-2,3-dihydro-4H-chromen-4-one",Biosynthesis of secondary metabolites,C21 H22 O7,386.13664,Upregulated,2.070657889649383,0.0025562306262978144
+Feature1038,"2-(2,4-Dihydroxy-5-methoxyphenyl)-5,7-dihydroxy-6-(3-methyl-2-buten-1-yl)-2,3-dihydro-4H-chromen-4-one",Biosynthesis of various plant secondary metabolites,C21 H22 O7,386.13664,Upregulated,2.070657889649383,0.0025562306262978144
+Feature1007,Feature1007,NA,C17 H29 N O12,439.16903,Upregulated,2.144768518897367,0.024401623440392844
+Feature0988,Feature0988,Biosynthesis of secondary metabolites,C14 H27 N O9,353.16869,Upregulated,6.019009171990049,0.04809015781236562
+Feature0988,Feature0988,Other,C14 H27 N O9,353.16869,Upregulated,6.019009171990049,0.04809015781236562
+Feature0719,N2-Dimethylguanosine,NA,C12 H17 N5 O5,311.12308,Upregulated,2.2933190652757958,0.013790369872208516
+Feature0676,2'-O-Methylguanosine,NA,C11 H15 N5 O5,297.10741,Upregulated,2.3802917960857513,0.046559504058435904
+Feature0571,Feature0571,NA,C11 H22 N4 O3,258.16921,Upregulated,6.1495809051122725,0.003818913229130643
+Feature0541,Feature0541,NA,C37 H51 N3 O12,729.34763,Upregulated,6.838519043442958,0.04200481789174624
+Feature0418,2'-Deoxycytidine-5'-monophosphorate,Metabolic pathways,C9 H14 N3 O7 P,307.05702,Downregulated,-4.40816282562592,0.0013490659106679952
+Feature0418,2'-Deoxycytidine-5'-monophosphorate,Other,C9 H14 N3 O7 P,307.05702,Downregulated,-4.40816282562592,0.0013490659106679952
+Feature0270,Feature0270,NA,C12 H22 N4 O3,270.16921,Upregulated,6.143257443914357,0.0021144276814035745
+Feature0204,melanostatin,NA,C13 H24 N4 O3,284.18484,Upregulated,6.1302233565926185,0.006189214364171556
+Feature0189,NP-007065-peak1,Microbial metabolism in diverse environments,C8 H10 O3,154.06303,Downregulated,-2.449180173219433,0.045933678331289036
+Feature0189,NP-007065-peak1,Aminobenzoate degradation,C8 H10 O3,154.06303,Downregulated,-2.449180173219433,0.045933678331289036
+Feature0079,Feature0079,NA,C15 H21 N3 O7,355.13805,Upregulated,2.4157273284902803,0.047147751543260466
+Feature0012,Pentoxifylline,NA,C13 H18 N4 O3,278.13793,Upregulated,5.671077218541991,0.00722621841482676

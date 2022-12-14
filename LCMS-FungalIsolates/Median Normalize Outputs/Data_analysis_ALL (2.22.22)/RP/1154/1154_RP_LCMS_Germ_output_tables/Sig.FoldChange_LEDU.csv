@@ -1,0 +1,49 @@
+FeatureID,name4plot,Formula,MW,Comment,log2FC,pval
+Feature1657,"3',4'-Dimethoxyacetophenone-peak2",C10 H12 O3,180.07864,Downregulated,-2.335763011,0.01792799
+Feature1643,Beauvericin,C45 H57 N3 O9,783.40966,Upregulated,2.842342406,0.016396598
+Feature1637,DL-Stachydrine,C7 H13 N O2,143.09464,Upregulated,2.677110177,0.014316467
+Feature1568,Penicillic acid-peak2,C8 H10 O4,170.05795,Upregulated,3.393304321,0.002703688
+Feature1560,Feature1560,C21 H31 N O12,489.18471,Downregulated,-2.808359877,0.003119669
+Feature1559,Succinyl proline-peak2,C9 H13 N O5,215.07946,Downregulated,-2.675346054,0.00310503
+Feature1499,Feature1499,C18 H31 N O11,437.18971,Downregulated,-2.025002264,0.00503307
+Feature1485,Isoferulic acid,C10 H10 O4,194.05792,Upregulated,2.851024689,0.016982553
+Feature1456,4-Phenylbutyric acid,C10 H12 O2,164.08376,Downregulated,-3.551217595,0.013363652
+Feature1447,Feature1447,C11 H19 N3 O2,225.14773,Downregulated,-2.204251272,0.048539755
+Feature1415,"9S,13R-12-Oxophytodienoic acid",C18 H28 O3,292.20376,Upregulated,2.242445728,0.005984802
+Feature1411,Feature1411,C21 H31 N O13,505.17965,Downregulated,-2.9695785,9.23E-04
+Feature1396,Feature1396,C20 H29 N5 O7,451.2068,Downregulated,-2.028280001,0.031747422
+Feature1382,Phenyl D-glucopyranosiduronic acid-peak7,C12 H14 O7,270.07398,Downregulated,-6.264691976,0.029343304
+Feature1371,3-O-beta-D-galactosyl-sn-glycerol-peak2,C9 H18 O8,254.10017,Downregulated,-3.091257817,0.002437741
+Feature1370,Feature1370,C16 H28 N2 O13,456.15926,Downregulated,-2.026118171,6.05E-05
+Feature1347,Imidazoleacetic acid riboside,C10 H14 N2 O6,258.08518,Downregulated,-3.101782224,0.003584693
+Feature1338,Phenyl D-glucopyranosiduronic acid-peak6,C12 H14 O7,270.07397,Downregulated,-4.800656229,0.031872198
+Feature1291,Tridemorph,C19 H39 N O,297.30319,Downregulated,-4.606268535,0.048940519
+Feature1251,11-Aminoundecanoic acid,C11 H23 N O2,201.1728,Upregulated,2.598886217,0.00479235
+Feature1237,Neolinustatin,C17 H29 N O11,423.17418,Downregulated,-2.117892201,0.009530579
+Feature1194,2-methylbutyrylcarnitine,C12 H23 N O4,245.1627,Upregulated,2.207128947,0.002402755
+Feature1188,UNII:74D1OHC38H-peak2,C19 H32 O4,324.23008,Upregulated,3.235864153,0.029242746
+Feature1048,Xanthine,C5 H4 N4 O2,152.03344,Downregulated,-3.051549062,0.019143657
+Feature1045,Oxepanone-peak2,C6 H10 O2,114.06804,Downregulated,-2.221904446,0.016012572
+Feature1007,Feature1007,C17 H29 N O12,439.16903,Downregulated,-2.40110958,0.046912849
+Feature0943,Phenyl D-glucopyranosiduronic acid-peak3,C12 H14 O7,270.07396,Downregulated,-4.126234459,0.026788861
+Feature0939,387122,C12 H18 O,178.13575,Upregulated,2.346868132,0.021044279
+Feature0728,Feature0728,C12 H17 N3 O7,315.10673,Downregulated,-3.101435733,0.005338469
+Feature0712,threonylphenylalanine-peak2,C13 H18 N2 O4,266.12668,Upregulated,2.123780572,0.034473954
+Feature0699,"2,4-Diacetamido-2,4,6-trideoxy-alpha-D-mannopyranose-peak2",C10 H18 N2 O5,246.12154,Upregulated,2.039690356,0.004514704
+Feature0690,1581740-peak2,C12 H13 N O4,235.08444,Downregulated,-2.774621323,0.03587268
+Feature0609,2-Hexenoylcarnitine,C13 H23 N O4,257.16273,Upregulated,2.727380079,0.005514651
+Feature0591,Feature0591,C18 H27 N O12,449.1534,Downregulated,-4.687752365,0.026597262
+Feature0531,1-Aminocyclohexanecarboxylic acid,C7 H13 N O2,143.09463,Upregulated,2.283184792,0.011685634
+Feature0444,Hypoxanthine-peak2,C5 H4 N4 O,136.0385,Downregulated,-2.477582791,0.033505056
+Feature0413,NP-003800-peak2,C10 H15 N O3,197.10521,Downregulated,-3.699603673,0.009602111
+Feature0320,Bis(methylbenzylidene)sorbitol,C22 H26 O6,386.17299,Upregulated,2.584457562,6.37E-05
+Feature0295,acetoacetic acid-peak1,C4 H6 O3,102.03166,Downregulated,-3.453494665,0.005551223
+Feature0278,Feature0278,C19 H41 N O,299.31886,Downregulated,-2.9277518,1.89E-04
+Feature0157,NP-019811-peak1,C6 H7 N O2,125.04763,Downregulated,-2.0946092,0.008406549
+Feature0128,N-Acetylvanilalanine-peak1,C12 H15 N O5,253.09502,Downregulated,-2.119853569,0.004927967
+Feature0104,Feature0104,C14 H27 N O10,369.16362,Downregulated,-3.297559445,1.13E-04
+Feature0090,Feature0090,C19 H34 N4 O8,446.2376,Downregulated,-2.064312025,8.10E-04
+Feature0068,Feature0068,C11 H13 N3 O3,235.09569,Downregulated,-5.105886207,0.010578794
+Feature0063,N-Phenyl-beta-D-glucopyranosylamine-peak1,C12 H17 N O5,255.11067,Upregulated,2.434166115,0.00871698
+Feature0058,Ajmaline,C20 H26 N2 O2,326.19951,Upregulated,5.129591557,0.015926775
+Feature0043,Feature0043,C12 H17 N O4,239.11576,Downregulated,-2.68059232,0.008759779

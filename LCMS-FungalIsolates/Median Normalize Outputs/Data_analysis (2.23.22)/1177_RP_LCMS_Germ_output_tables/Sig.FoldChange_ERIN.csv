@@ -1,0 +1,15 @@
+FeatureID,name4plot,KEGG Pathways,Formula,MW,Comment,log2FC,pval
+Feature1686,Phenacetin-peak5,Metabolic pathways,C10 H13 N O2,179.09467,Upregulated,2.4167665163092864,0.0013763860729978175
+Feature1686,Phenacetin-peak5,Biosynthesis of secondary metabolites,C10 H13 N O2,179.09467,Upregulated,2.4167665163092864,0.0013763860729978175
+Feature1686,Phenacetin-peak5,2-Oxocarboxylic acid metabolism,C10 H13 N O2,179.09467,Upregulated,2.4167665163092864,0.0013763860729978175
+Feature1686,Phenacetin-peak5,Biosynthesis of alkaloids derived from shikimate pathway,C10 H13 N O2,179.09467,Upregulated,2.4167665163092864,0.0013763860729978175
+Feature1686,Phenacetin-peak5,"Phenylalanine, tyrosine and tryptophan biosynthesis",C10 H13 N O2,179.09467,Upregulated,2.4167665163092864,0.0013763860729978175
+Feature1686,Phenacetin-peak5,Other,C10 H13 N O2,179.09467,Upregulated,2.4167665163092864,0.0013763860729978175
+Feature1536,N-Acetyl-α-D-glucosamine,Metabolic pathways,C8 H15 N O6,221.08991,Upregulated,2.0688287575778554,0.005043832870906598
+Feature1536,N-Acetyl-α-D-glucosamine,ABC transporters,C8 H15 N O6,221.08991,Upregulated,2.0688287575778554,0.005043832870906598
+Feature1536,N-Acetyl-α-D-glucosamine,Other,C8 H15 N O6,221.08991,Upregulated,2.0688287575778554,0.005043832870906598
+Feature1332,NP-008177,NA,C28 H41 N O5,471.29851,Upregulated,2.0037202755555885,0.016929654820180235
+Feature0952,Feature0952,NA,C19 H41 N O2,315.3138,Downregulated,-3.341667579359927,0.038134145669544976
+Feature0857,Nonivamide,NA,C17 H27 N O3,293.199,Downregulated,-2.719875546926428,0.011943831361470075
+Feature0582,"(1R,5R)-3,3,5-Trimethylcyclohexyl 5-oxo-L-prolinate",NA,C14 H23 N O3,253.16772,Downregulated,-2.6493404209622393,0.04722399244635112
+Feature0284,3-[(1S)-2-Cyclohexen-1-yl]-L-alanine,NA,C9 H15 N O2,169.11033,Upregulated,2.113504156787194,0.0036585889397003045

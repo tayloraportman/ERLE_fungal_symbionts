@@ -1,0 +1,4 @@
+FeatureID,name4plot,KEGG Pathways,Formula,MW,Comment,log2FC,pval
+Feature1301,Agmatine,Metabolic pathways;Other,C5 H14 N4,130.12182,Downregulated,-2.7995660412160435,0.02932525400163757
+Feature1137,Adenosine 5'-monophosphate,Metabolic pathways;Biosynthesis of secondary metabolites;Biosynthesis of cofactors;Biosynthesis of plant secondary metabolites;Other,C10 H14 N5 O7 P,347.06316,Downregulated,-2.1960325228846496,0.009397801332303059
+Feature0071,Methionylphenylalanine-peak1,NA,C14 H20 N2 O3 S,296.11937,Downregulated,-2.368670271277758,0.0168693803079132

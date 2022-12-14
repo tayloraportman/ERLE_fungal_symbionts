@@ -1,0 +1,810 @@
+---
+title: "DifferentialAnalysis"
+output: html_notebook
+---
+
+---
+title: "RP Differential Analysis All Isolates+Seeds All"
+output: html_notebook
+---
+
+# 1. Importing Libraries
+
+```{r libraries, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggrepel)
+library(ggsci)
+library(pheatmap)
+library(RColorBrewer)
+library(readxl)
+library(UpSetR)
+source('functions_cdis_diff.R')
+```
+
+Change to what data you are using
+```{r}
+data= 'RP'
+```
+
+# 2. Import data
+
+
+Because differential analysis includes the calculations of means, the data to be used in this section is the normalized untransformed data
+
+```{r set_path, message=FALSE, warning=FALSE}
+# set path variables
+project_dir <- getwd()
+project_name <- 'RP_All_checked'
+figures_dir <- file.path(project_dir, paste0(project_name, '_output_figures'))
+tables_dir <- file.path(project_dir,  paste0(project_name, '_output_tables'))
+norm_auc_table_file <- file.path(tables_dir, 'normalized_untransformed_auc_table.csv')
+norm_auc_table_nogap_file <- file.path(tables_dir, 'normalized_untransformed_auc_table_nogap.csv')
+# If the flag was setted before, nothing needs to be changed here, the correct file will be automatically used
+
+  compounds_table_file <- file.path(tables_dir, 'compounds_table.csv')
+
+
+# Load auc_table
+
+norm.matrix <- read_csv(norm_auc_table_file)
+norm.matrix <- column_to_rownames(norm.matrix, var = '...1')
+
+norm.matrix_nogap <- read_csv(norm_auc_table_nogap_file)
+norm.matrix_nogap <- column_to_rownames(norm.matrix_nogap, var = '...1')
+
+# Load compounds table and add a column that has names for identified compounds and FeatureID for the rest (for plotting puRPouses)
+
+compounds_table <- read_csv(compounds_table_file)
+
+# Import metadata and fix names
+metadata_file <- file.path(tables_dir, 'fixed_metadata.csv')
+metadata <- read_csv(metadata_file)
+
+
+
+```
+
+
+
+# 3. Calculate ratios and log2fold-change
+
+## 3.1 Get samples per each treatment
+
+```{r}
+
+# Get the average AUC per each of the treatments
+## Get samples per treatment
+
+F1154.samples <- get_samples(metadata, Treatment = 'Fungi', value = '1154')
+F1177.samples <- get_samples(metadata, Treatment = 'Fungi', value = '1177')
+F1246.samples <- get_samples(metadata, Treatment = 'Fungi', value = '1246')
+CTRL.samples <- get_samples(metadata, Treatment = 'Fungi', value = 'CTRL')
+
+```
+
+## 3.2 Get table of differentially expressed features per each comparison
+
+The following function will calculate ratio, log2FC, p values and adjusted pvalues. If no replicates are available for EACH treatment please use the get_diff_table_no_pval() function
+
+```{r}
+
+# The following function will calculate ratio, log2FC, p values and adjusted pvalues. If no replicates are available for EACH treatment
+# please use the get_diff_table_no_pval() function
+
+F1154_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = F1154.samples, control.sample_list = CTRL.samples, log2_transformed = TRUE)
+F1177_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = F1177.samples, control.sample_list = CTRL.samples, log2_transformed = TRUE)
+F1246_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = F1246.samples, control.sample_list = CTRL.samples, log2_transformed = TRUE)
+
+```
+
+Merge differentially expressed features with the annotation
+
+```{r}
+
+# Create dataframes for the up and downregulated metabolites at each time point and merge them with the compound information
+
+F1154_to_CTRL.diff_table <- compounds_table %>% 
+  select( - contains('Results'), -SampleID, -AUC,  -Fungi, - Plant) %>% 
+  right_join(F1154_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+F1154_to_CTRL.diff_table$Comment <- factor(F1154_to_CTRL.diff_table$Comment, 
+                               levels = c( 'Downregulated', 'Upregulated' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_F1154.csv')
+write_csv(F1154_to_CTRL.diff_table, table_file )
+
+F1177_to_CTRL.diff_table<- compounds_table %>% 
+  select(-contains('Annotation Source:'), - contains('Results'), -SampleID, -AUC, -Plant, - Fungi) %>%
+  right_join(F1177_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+F1177_to_CTRL.diff_table$Comment <- factor(F1177_to_CTRL.diff_table$Comment, 
+                               levels = c( 'Downregulated', 'Upregulated'))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_F1177.csv')
+write_csv(F1177_to_CTRL.diff_table, table_file )
+
+F1246_to_CTRL.diff_table <- compounds_table %>% 
+  select(-contains('Annotation Source:'), - contains('Results'), -SampleID, -AUC, -Plant, -Fungi) %>% 
+  right_join(F1246_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+F1246_to_CTRL.diff_table$Comment <- factor(F1246_to_CTRL.diff_table$Comment, 
+                               levels = c('Downregulated', 'Upregulated' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_F1246.csv')
+write_csv(F1246_to_CTRL.diff_table, table_file )
+
+```
+
+Extract most differentially expressed features
+
+```{r warning=FALSE}
+
+# Extract significant features of each comparison based on adjusted pvalue
+sig_features <- c(F1154_to_CTRL.diff_table$FeatureID[F1154_to_CTRL.diff_table$pval.adj < 0.05],
+                  F1177_to_CTRL.diff_table$FeatureID[F1177_to_CTRL.diff_table$pval.adj < 0.05],
+                  F1246_to_CTRL.diff_table$FeatureID[F1246_to_CTRL.diff_table$pval.adj < 0.05])
+
+sig_features <- unique(sig_features)
+
+```
+
+
+# 4. Plots of dysregulated features
+
+## 4.1 Number of dysregulated features in each group
+
+```{r}
+# removed pval adj to regular pval
+num_diff_features <- tibble(Comparison = rep(c('F1154_to_CTRL', 'F1177_to_CTRL', 'F1246_to_CTRL'), each = 2),
+                            Type = rep(c('Name', 'No name'), 3),
+                            count = 0)
+num_diff_features$Type <- factor(num_diff_features$Type, levels = c('No name', 'Name'))
+
+num_diff_features[1, 3] <- sum(F1154_to_CTRL.diff_table$pval.adj < 0.05 & !is.na(F1154_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[2, 3] <- sum(F1154_to_CTRL.diff_table$pval.adj < 0.05 & is.na(F1154_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[3, 3] <- sum(F1177_to_CTRL.diff_table$pval.adj < 0.05 & !is.na(F1177_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[4, 3] <- sum(F1177_to_CTRL.diff_table$pval.adj < 0.05 & is.na(F1177_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[5, 3] <- sum(F1246_to_CTRL.diff_table$pval.adj < 0.05 & !is.na(F1246_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[6, 3] <- sum(F1246_to_CTRL.diff_table$pval.adj < 0.05 & is.na(F1246_to_CTRL.diff_table$Name), na.rm = TRUE)
+
+
+num_diff_plot <- ggplot(num_diff_features)+
+  geom_bar(aes(y=count, x=Comparison,fill= Type), stat="identity", alpha=0.7)+
+  theme_classic()+xlab("Comparison")+ylab("Count")
+  
+num_diff_plot
+# shows snumber of significantly regulated compounds
+figure_file <- file.path(figures_dir, 'Num_diff_features.png')
+ggsave(figure_file, num_diff_plot, dpi = 300)
+```
+
+## 4.2 Dysregulated features shared at different timepoints
+
+An **upset plot**is used instead of a Venn Diagram as it provides a better visualization of the number of figures that are being shared among groups
+
+```{r}
+#Filter diff tables by pval.adj
+
+F1154.sig<-F1154_to_CTRL.diff_table%>% 
+  filter(pval.adj<0.05)
+F1177.sig<-F1177_to_CTRL.diff_table%>% 
+  filter(pval.adj<0.05)
+F1246.sig<-F1246_to_CTRL.diff_table%>% 
+  filter(pval.adj<0.05)
+
+#Get list of features at each time point for each of the cases
+F1154.upregulated<-get_vectors(F1154.sig, 'Comment', 'Upregulated', 'FeatureID')
+F1154.downregulated<-get_vectors(F1154.sig, 'Comment', 'Downregulated', 'FeatureID')
+#F1154.not_in_control<-get_vectors(F1154.sig, 'Comment', 'Not #present in control', 'FeatureID')
+#F1154.only_in_control<-get_vectors(F1154.sig, 'Comment', 'Only #present in control', 'FeatureID')
+
+F1177.upregulated<-get_vectors(F1177.sig, 'Comment', 'Upregulated', 'FeatureID')
+F1177.downregulated<-get_vectors(F1177.sig, 'Comment', 'Downregulated', 'FeatureID')
+#F1177.not_in_control<-get_vectors(F1177.sig, 'Comment', 'Not present in control', 'FeatureID')
+#F1177.only_in_control<-get_vectors(F1177.sig, 'Comment', 'Only present in control', 'FeatureID')
+
+F1246.upregulated<-get_vectors(F1246.sig, 'Comment', 'Upregulated', 'FeatureID')
+F1246.downregulated<-get_vectors(F1246.sig, 'Comment', 'Downregulated', 'FeatureID')
+#F1246.not_in_control<-get_vectors(F1246.sig, 'Comment', 'Not present in control', 'FeatureID')
+#F1246.only_in_control<-get_vectors(F1246.sig, 'Comment', 'Only present in control', 'FeatureID')
+```
+```{r fig.height=8}
+upset_input<-list(F1154.upregulated=F1154.upregulated,
+                    F1154.downregulated=F1154.downregulated,
+                    #F1154.not_in_control=F1154.not_in_control,
+                    #F1154.only_in_control=F1154.only_in_control,
+                    F1177.upregulated=F1177.upregulated,
+                    F1177.downregulated=F1177.downregulated,
+                    #F1177.not_in_control=F1177.not_in_control,
+                    #F1177.only_in_control=F1177.only_in_control,
+                    F1246.upregulated=F1246.upregulated,
+                    F1246.downregulated=F1246.downregulated)
+                    #F1246.not_in_control=F1246.not_in_control,
+                    #F1246.only_in_control=F1246.only_in_control)
+
+upset_metadata<-data.frame(sets=as.vector(names(upset_input)),
+                         Time=rep(c('F1154', 'F1177', 'F1246'), each=4))
+
+upset_features<-upset(fromList(upset_input), order.by="freq", cutoff=1, nsets=12,
+                    mainbar.y.label='Number of shared features', sets.x.label='Number of features',
+                    text.scale=c(1.5, 1, 1.5, 1, 1.3, 1.3),
+                    set.metadata=list(data=upset_metadata, 
+                                        plots=list(list(type='matrix_rows', column='Time', 
+                                                          colors=c(F1154='#EFC000FF', F1177='#868686FF', F1246='#CD534CFF')))))
+upset_features
+
+figure_file<-file.path(figures_dir, 'Upset-KEGG.png')
+png(figure_file, width=800, height=800, res=100)
+upset_features
+dev.off()
+```
+
+## 4.2 Volcano plots
+
+labels if L2FC is doubble lfc.t
+
+```{r warning=FALSE}
+
+lfc.t <- 2
+pval.t <- 0.05
+
+F1154_to_CTRL_volcano <- plot_volcano(F1154_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'Isolate 1154 vs Media')
+F1154_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'F1154_CTRL_volcano.png')
+ggsave(figure_file, F1154_to_CTRL_volcano, width=20, height=20, unit='cm')
+
+
+F1177_to_CTRL_volcano <- plot_volcano(F1177_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'Isolate 1177 vs Media')
+F1177_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'F1177_CTRL_volcano.png')
+ggsave(figure_file, F1177_to_CTRL_volcano, width=20, height=20, unit='cm')
+
+F1246_to_CTRL_volcano <- plot_volcano(F1246_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'Isolate 1246 vs Media')
+F1246_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'F1246_CTRL_volcano.png')
+ggsave(figure_file, F1246_to_CTRL_volcano, width=20, height=20, unit='cm')
+```
+
+
+```{r}
+# Filter diff tables by pval.adj
+F1246.sig <- F1246_to_CTRL.diff_table %>% 
+  filter(pval.adj < 0.05)
+F1154.sig <- F1154_to_CTRL.diff_table %>% 
+  filter(pval.adj < 0.05)
+F1177.sig <- F1177_to_CTRL.diff_table %>% 
+  filter(pval.adj < 0.05)
+
+F1246.sig2 <- F1246.sig %>% 
+  filter(log2FC > 0.3 | log2FC < -0.3)
+F1154.sig2 <- F1154.sig %>% 
+  filter(log2FC > 0.3 | log2FC < -0.3)
+F1177.sig2 <- F1177.sig %>% 
+  filter(log2FC > 0.3 | log2FC < -0.3)
+
+F1154.sig2$isolate<- 1154
+F1177.sig2$isolate<- 1177
+F1246.sig2$isolate<- 1246
+sig.all<- rbind(F1154.sig2, F1177.sig2, F1246.sig2)
+
+table_file <- file.path(tables_dir, 'Sig.diff.expressed.allIsolates_L2FC_0.3.csv')
+write_csv(sig.all, table_file )
+# Get list of features at each time point for each of the cases
+F1246.upregulated <- get_vectors(F1246.sig, 'Comment', 'Upregulated', 'FeatureID')
+F1246.downregulated <- get_vectors(F1246.sig, 'Comment', 'Downregulated', 'FeatureID')
+#F1246.not_in_control <- get_vectors(F1246.sig, 'Comment', 'Not present in control', 'FeatureID')
+#F1246.only_in_control <- get_vectors(F1246.sig, 'Comment', 'Only present in control', 'FeatureID')
+F1154.upregulated <- get_vectors(F1154.sig, 'Comment', 'Upregulated', 'FeatureID')
+F1154.downregulated <- get_vectors(F1154.sig, 'Comment', 'Downregulated', 'FeatureID')
+#F1154.not_in_control <- get_vectors(F1154.sig, 'Comment', 'Not present in control', 'FeatureID')
+#F1154.only_in_control <- get_vectors(F1154.sig, 'Comment', 'Only present in control', 'FeatureID')
+F1177.upregulated <- get_vectors(F1177.sig, 'Comment', 'Upregulated', 'FeatureID')
+F1177.downregulated <- get_vectors(F1177.sig, 'Comment', 'Downregulated', 'FeatureID')
+#F1177.not_in_control <- get_vectors(F1177.sig, 'Comment', 'Not present in control', 'FeatureID')
+#F1177.only_in_control <- get_vectors(F1177.sig, 'Comment', 'Only present in control', 'FeatureID')
+```
+## 4.3 Van Krevelen Diagrams of dysregulated features
+
+**Dysregulated features at F1154**
+
+```{r}
+
+F1154_vank<-plot_vank(F1154.sig, Class, Comment)
+F1154_vank
+
+figure_file<-file.path(figures_dir, 'DE_vank_F1154.png')
+ggsave(figure_file, F1154_vank)
+```
+
+**Dysregulated features at F1177*
+
+```{r}
+F1177_vank<-plot_vank(F1177.sig, Class, Comment)
+F1177_vank
+
+figure_file<-file.path(figures_dir, 'DE_vank_F1177.png')
+ggsave(figure_file, F1177_vank)
+
+
+#**Dysregulated features at F1246**
+
+F1246_vank<-plot_vank(F1246.sig, Class, Comment)
+F1246_vank
+
+figure_file<-file.path(figures_dir, 'DE_vank_F1246.png')
+ggsave(figure_file, F1246_vank)
+
+
+#Van Krevelen of all
+
+
+
+sig_all<-rbind(F1154.sig%>% select(FeatureID, Comment) %>% mutate(Fungi='1154'),
+                 F1177.sig%>% select(FeatureID, Comment) %>% mutate(Fungi='1177'),
+                 F1246.sig%>% select(FeatureID, Comment) %>% mutate(Fungi='1246'))
+
+sig_all_compounds_table<-compounds_table%>% 
+  select(FeatureID, H_to_C, O_to_C, Class, Fungi, GFE) %>% 
+  distinct() %>% 
+  left_join(sig_all, by=c('FeatureID', 'Fungi'))%>%
+  na.omit()
+
+
+
+my_colors=c('Upregulated'='tomato2',
+              'Downregulated'='lightsteelblue')
+
+
+
+dysreg_vk<-ggplot(sig_all_compounds_table,
+                    aes(x=O_to_C,
+                        y=H_to_C,
+                        color=Class)) +
+  geom_point() +
+  scale_color_manual(values=my_colors) +
+  theme_classic() +
+  labs(x='O:C',
+       y='H:C',
+       title='Van Krevelen Diagram ',
+       color='Assigned compound class') +
+  #new_scale_color() +
+  #class_rect+
+  scale_color_manual(values=get_palette('d3', 8)) +
+  theme(plot.title=element_text(face='bold', hjust=0.5)) +
+  facet_wrap(~Fungi*Comment, 3)
+
+dysreg_vk
+
+figure_file<-file.path(figures_dir, 'dysreg_vk.png')
+ggsave(figure_file, dysreg_vk)
+```
+
+## 4.4 GFE plots of dysregulated features
+
+**Dysregulated features at F1154**
+
+```{r}
+
+my_colors=c( 
+              'Upregulated'='tomato2',
+              'Downregulated'='lightsteelblue')
+
+F1154_GFE_box<-plot_boxplot(F1154.sig, Comment, GFE, Comment, my_colors)+ labs(title='Isolate 1154')
+F1154_GFE_box
+
+figure_file<-file.path(figures_dir, 'DE_GFE_F1154.png')
+ggsave(figure_file, F1154_GFE_box)
+
+
+
+F1177_GFE_box<-plot_boxplot(F1177.sig, Comment, GFE, Comment, my_colors)+ labs(title='Isolate 1177')
+F1177_GFE_box
+
+figure_file<-file.path(figures_dir, 'DE_GFE_F1177.png')
+ggsave(figure_file, F1177_GFE_box)
+
+
+F1246_GFE_box<-plot_boxplot(F1246.sig, Comment, GFE, Comment, my_colors)+ labs(title= 'Isolate 1246')
+F1246_GFE_box
+
+figure_file<-file.path(figures_dir, 'DE_GFE_F1246.png')
+ggsave(figure_file, F1246_GFE_box)
+
+
+all_GFE_box<- ggplot(sig_all_compounds_table,
+         aes(x = Comment,
+             y = GFE,
+             fill = Comment)) +
+    geom_violin() +
+    geom_boxplot(width=0.1, color="black", alpha=0.2) +
+    scale_fill_manual(values = my_colors) +
+    theme_classic() +
+    theme(plot.title = element_text(face = 'bold', hjust = 0.5))+
+  facet_wrap(~Fungi)
+all_GFE_box
+figure_file<-file.path(figures_dir, 'all_GFE.png')
+ggsave(figure_file, all_GFE_box)
+
+```
+
+
+
+
+```{r}
+
+F1246.count<- F1246.sig%>% #F1246.sig only includes sig. up/down regulated features 
+    select(FeatureID, Class, Comment, pval.adj)%>%
+    count(Class, Comment)
+
+F1246.count <- within(F1246.count, n[Comment=="Downregulated"] <- (n*(-1))) #Makes downregulated features negative in the figure
+
+  
+class.plot<- ggplot(F1246.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+   scale_fill_manual(values = c("lightsteelblue","tomato2"))+
+  theme_classic()+xlab("Number of Features")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1246")
+class.plot
+
+figure_file <- file.path(figures_dir, 'Class_rank_F1246.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+# I then repeated theses scripts for each isolate 
+
+
+F1177.count<- F1177.sig%>% 
+    select(FeatureID, Class, Comment, pval.adj)%>%
+    count(Class, Comment)
+F1177.count <- within(F1177.count, n[Comment=="Downregulated"] <- (n*(-1)))
+    #filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(F1177.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+   scale_fill_manual(values = c("lightsteelblue","tomato2"))+
+  theme_classic()+xlab("Number of Features")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1177")
+class.plot
+
+figure_file <- file.path(figures_dir, 'Class_rank_F1177.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+F1154.count<- F1154.sig%>% 
+    select(FeatureID, Class, Comment, pval.adj, pval)%>%
+    count(Class, Comment)
+F1154.count <- within(F1154.count, n[Comment=="Downregulated"] <- (n*(-1)))
+    #filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(F1154.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+   scale_fill_manual(values = c("lightsteelblue","tomato2"))+
+  theme_classic()+xlab("Number of Features")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1154")
+class.plot
+
+figure_file <- file.path(figures_dir, 'Class_rank_F1154.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+F1154.count$isolate<- 1154
+F1177.count$isolate<- 1177
+F1246.count$isolate<- 1246
+class.rank.all<- rbind(F1154.count, F1177.count, F1246.count)
+
+
+class.plot<- ggplot(class.rank.all)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  facet_wrap(~isolate, 3)+
+   scale_fill_manual(values = c("lightsteelblue","tomato2"))+
+  theme_classic()+xlab("Number of Features")+ylab("Class")+
+  labs(title="Class ranks")
+class.plot
+
+figure_file <- file.path(figures_dir, 'Class_rank_all.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+class.plot<- ggplot(class.rank.all)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  facet_wrap(~isolate, 1)+
+   scale_fill_manual(values = c("lightsteelblue","tomato2"))+
+  theme_classic()+xlab("Number of Features")+ylab("Class")+
+  labs(title="Class ranks")
+class.plot
+
+figure_file <- file.path(figures_dir, 'Class_rank_all_2.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+
+
+```
+
+
+
+
+
+
+# 5. Hierarchical clustering analysis using heatmaps
+
+Multiple heatmaps will be plotted, based on the differential expression and if the compounds were or not assigned and structure
+
+### Normalized Area under the curve (AUC) heatmap for all detected features
+
+```{r warning=FALSE}
+
+# Initialize graphical device
+#dev.off()
+
+# Set sampleID as row.names to annotate heatmap
+
+table_file <-read.csv('RP_All_checked_output_tables/gap_filled_compounds_table.csv')
+
+
+
+compound_list<- table_file%>%
+  select(FeatureID, Class)%>%
+  distinct()
+
+metadata$Fungi<- paste0("F", metadata$Fungi)
+col_annot <- column_to_rownames(metadata, var = 'SampleID') 
+row_annot<- column_to_rownames(compound_list, var= 'FeatureID')
+mapcolor <- colorRampPalette(brewer.pal(11, 'RdYlBu'))(100)[100:1]
+
+figure_file <- file.path(figures_dir, 'All_features_heatmap_Class.pdf')
+
+annot_colors <- list(
+  Fungi = c(FCTRL ='gray33', F1154 = 'lightcoral', F1177 = 'darkslategray3', F1246 = 'chartreuse3'), 
+  Plant= c(ERLE= 'firebrick3', ERIN= 'gold2', BOCU= 'dodgerblue2', LEDU='green3', CTRL='gray69'),
+  Class = c('Amino Sugar' = '#66C2A5', Carbohydrate = '#FC8D62', 'Condensed HC'= "#8DA0CB", Lipid ="#E78AC3", Other= "#A6D854", Phenol="#FFD92F", Protein="#E5C494", 'Unsaturated HC'="#B3B3B3"))
+
+pdf(figure_file)
+pheatmap(norm.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_row= row_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         show_rownames = FALSE,
+         cutree_cols = 5,
+         main = 'All features (scaled AUC)'
+)
+#dev.off()
+```
+
+[Scaled Area under the curve (AUC) heatmap for all detected features](`r toString(figure_file)`)
+
+### Normalized Area under the curve (AUC) heatmap for only features that were identified
+
+```{r}
+# Extract all features that have names
+named_compounds <- compounds_table %>% 
+  select(FeatureID, Name, name4plot) %>% 
+  filter(!is.na(Name)) %>% 
+  distinct()
+
+# Create a matrix of only identified features
+
+named_compounds.matrix <- norm.matrix[rownames(norm.matrix) %in% named_compounds$FeatureID,]
+row.names(named_compounds.matrix) <- compounds_table$name4plot[match(row.names(named_compounds.matrix), compounds_table$FeatureID)]
+
+```
+
+
+```{r}
+
+F1154.sig$Fungi<- '1154'
+F1177.sig$Fungi<- '1177'
+F1246.sig$Fungi<- '1246'
+
+
+sig.data.all<- rbind(F1154.sig, F1177.sig, F1246.sig)
+#compounds_table$Class <- gsub( "Lignin", "Phenol", compounds_table$Class)
+sig.data.all$Class <- gsub("Tannin","Other",  sig.data.all$Class)
+
+sig.data.all<- sig.data.all %>%
+  mutate(class = case_when(
+    endsWith(Class, "Lignin") ~ "Phenol",
+    endsWith(Class, "Tannin") ~ "Highly oxygenated compounds"
+  ))%>%
+  select(FeatureID, Class, Fungi, Comment)%>%
+  count(Class, Fungi, Comment)
+  
+
+
+stack.class<-ggplot(sig.data.all, aes(fill=Class, y=n, x=Fungi)) + 
+    facet_wrap(~Comment)+
+    geom_bar(position="fill", stat="identity")+
+   scale_fill_brewer(palette = 'Set2')+
+  theme_classic()+
+  ylab('Percent abundance of compounds')+
+  xlab('Fungal isolates')+
+  labs(title= "Differentially expressed compounds by compound class",
+       comment="Differetally expressed compounds pval.adj< 0.05 ")
+stack.class
+figure_file <- file.path(figures_dir, 'Class.Percent.abund.png')
+ggsave(figure_file, stack.class, dpi=400)
+
+stack.class2<-ggplot(sig.data.all, aes(fill=Class, y=n, x=Fungi)) + 
+  facet_wrap(~Comment)+
+    geom_bar(position="stack", stat="identity")+
+  scale_fill_brewer(palette = 'Set2')+
+  ylab('Number of compounds')+
+  xlab('Fungal isolates')+
+  labs(title= "Differentially expressed compounds by compound class",
+       caption="Differetally expressed compounds pval< 0.05 ")+
+  theme_classic()
+stack.class2
+figure_file <- file.path(figures_dir, 'Class.Relative.abund.png')
+ggsave(figure_file, stack.class2, dpi=400)
+```
+
+
+```{r}
+figure_file <- file.path(figures_dir, 'All_identified_features_heatmapClass.pdf')
+
+
+pdf(figure_file, width = 15, height = 10)
+pheatmap(named_compounds.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_colors = annot_colors,
+         annotation_row= row_annot,
+         color = mapcolor,
+         cutree_cols = 4,
+         cutree_rows = 5,
+         fontsize_row = 6,
+         main = 'Identified features (scaled AUC)'
+)
+dev.off()
+```
+
+[Scaled Area under the curve (AUC) heatmap for only features that were identified](`r toString(figure_file)`)
+
+## 4.3 KEGG Up and Down Regulated 
+```{r}
+
+F1246.sig$KEGGPathways<-as.factor(F1246.sig$"KEGG Pathways")  
+
+F1246.count<- F1246.sig%>% 
+  select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  group_by(KEGGPathways, Comment ) %>% 
+  count(KEGGPathways) %>%
+   drop_na(KEGGPathways)%>% filter(Comment != "Only present in control")
+  F1246.count <- within(F1246.count, n[Comment=="Downregulated"] <- (n*(-1)))
+class.plot<- ggplot(F1246.count)+
+geom_bar(aes(y=KEGGPathways, x=n,fill= Comment), stat="identity", alpha=0.7)+
+   scale_fill_manual(values = c("lightsteelblue","tomato2"))+
+  theme_classic()+xlab("Number of Features")+ylab("KEGG Pathways")+
+  labs(title="Up and down regulated KEGG pathways of Isolate 1246")
+class.plot
+
+figure_file <- file.path(figures_dir, 'KEGGrank_F1246.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+
+F1177.sig$KEGGPathways<-as.factor(F1177.sig$"KEGG Pathways")  
+F1177.count<- F1177.sig%>% 
+  select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  group_by(KEGGPathways, Comment ) %>% 
+  count(KEGGPathways) %>%
+   drop_na(KEGGPathways)%>% filter(Comment != "Only present in control")
+   F1177.count <- within(F1177.count, n[Comment=="Downregulated"] <- (n*(-1))) 
+class.plot<- ggplot(F1177.count)+
+geom_bar(aes(y=KEGGPathways, x=n,fill= Comment), stat="identity", alpha=0.7)+
+   scale_fill_manual(values = c("lightsteelblue","tomato2"))+
+  theme_classic()+xlab("Number of Features")+ylab("KEGG Pathways")+
+  labs(title="Up and down regulated KEGG pathways of Isolate 1177")
+class.plot
+
+figure_file <- file.path(figures_dir, 'KEGGrank_F1177.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+
+F1154.sig$KEGGPathways<-as.factor(F1154.sig$"KEGG Pathways")  
+F1154.count<- F1154.sig%>% 
+  select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  group_by(KEGGPathways, Comment ) %>% 
+  count(KEGGPathways) %>%
+   drop_na(KEGGPathways)%>% filter(Comment != "Only present in control")
+    F1154.count <- within(F1154.count, n[Comment=="Downregulated"] <- (n*(-1)))
+class.plot<- ggplot(F1154.count)+
+geom_bar(aes(y=KEGGPathways, x=n,fill= Comment), stat="identity", alpha=0.7)+
+   scale_fill_manual(values = c("lightsteelblue","tomato2"))+
+  theme_classic()+xlab("Number of Features")+ylab("KEGG Pathways")+
+  labs(title="Up and down regulated KEGG pathways of Isolate 1154")
+class.plot
+
+figure_file <- file.path(figures_dir, 'KEGGrank_F1154.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+
+F1154.count$isolate<- 1154
+F1177.count$isolate<- 1177
+F1246.count$isolate<- 1246
+class.rank.all<- rbind(F1154.count, F1177.count, F1246.count)
+
+class.plot<- ggplot(class.rank.all)+
+geom_bar(aes(y=KEGGPathways, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  facet_wrap(~isolate)+
+  scale_fill_manual(values = c("lightsteelblue","tomato2"))+
+  theme_classic()+xlab("Number of Features")+ylab("KEGG Pathways")+
+  labs(title="Up and down regulated KEGG pathways")
+class.plot
+
+figure_file <- file.path(figures_dir, 'KEGG_rank_all.png')
+ggsave(figure_file, class.plot, width=30, height=10, unit='cm')
+
+```
+
+
+
+
+## 4.38 Upregulated Secondary Metabolites
+```{r}
+
+F1246.sig$KEGGPathways<-as.factor(F1246.sig$"KEGG Pathways")  
+F1246.reg<- F1246.sig %>% 
+  #select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  filter(KEGGPathways== 'Biosynthesis of secondary metabolites')%>% 
+ filter(Comment == "Upregulated")
+
+table_file <- file.path(tables_dir, 'Upreg.SecondaryMetabolites_F1246.csv')
+write_csv( F1246.reg, table_file)
+  
+F1177.sig$KEGGPathways<-as.factor(F1177.sig$"KEGG Pathways")  
+F1177.reg<- F1177.sig%>% 
+  #select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  filter(KEGGPathways== 'Biosynthesis of secondary metabolites')%>% 
+ filter(Comment == "Upregulated")
+table_file <- file.path(tables_dir, 'Upreg.SecondaryMetabolites_F1177.csv')
+write_csv( F1177.reg, table_file)
+
+F1154.sig$KEGGPathways<-as.factor(F1154.sig$"KEGG Pathways")  
+F1154.reg<- F1154.sig%>% 
+  #select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  filter(KEGGPathways== 'Biosynthesis of secondary metabolites')%>% 
+ filter(Comment == "Upregulated")
+table_file <- file.path(tables_dir, 'Upreg.SecondaryMetabolites_F1154.csv')
+write_csv( F1154.reg, table_file)
+```
+
+### All dysregulated features
+
+```{r}
+# Create an AUC matrix that contains only features that are differentially expressed
+
+sig_features.matrix <- norm.matrix[row.names(norm.matrix) %in% sig_features, ]
+
+row.names(sig_features.matrix) <- compounds_table$name4plot[match(row.names(sig_features.matrix), compounds_table$FeatureID)]
+
+```
+
+
+
+
+

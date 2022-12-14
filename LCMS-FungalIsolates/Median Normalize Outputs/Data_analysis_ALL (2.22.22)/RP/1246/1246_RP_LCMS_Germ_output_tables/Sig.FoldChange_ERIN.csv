@@ -1,0 +1,10 @@
+FeatureID,name4plot,Formula,MW,Comment,log2FC,pval
+Feature1460,Phenacetin-peak4,C10 H13 N O2,179.0946,Downregulated,-2.798984161376092,0.0015864306884055344
+Feature1272,α-Eleostearic acid,C18 H30 O2,278.22457000000003,Downregulated,-2.179464424669609,0.0046542930222447125
+Feature1054,Feature1054,C23 H32 N2 O12,528.19573,Downregulated,-2.355113945839929,4.9356732735587e-4
+Feature1036,nicotianamine,C12 H21 N3 O6,303.14313,Downregulated,-2.019666445526992,0.04763636687964923
+Feature0905,"N-(4-Hydroxy-3,5-dimethoxybenzoyl)glycine-peak1",C11 H13 N O6,255.07429,Downregulated,-3.223562523541974,0.03722578902236272
+Feature0494,1-(6-Amino-9H-purin-9-yl)-1-deoxy-Î²-D-ribofuranuronamide,C10 H12 N6 O4,280.09207,Downregulated,-2.218896821407673,0.0064486257426519325
+Feature0411,"2-(2,4-Dihydroxyphenyl)-5,7-dihydroxy-6-(3-hydroxy-3-methylbutyl)-4H-chromen-4-one",C20 H20 O7,372.12097,Upregulated,2.122761727832205,0.03794348166485663
+Feature0174,"1-Methyl-1,2,3,4-tetrahydro-Î²-carboline-3-carboxylic acid-peak1",C13 H14 N2 O2,230.10555,Downregulated,-3.1604366900317657,0.002064936536099287
+Feature0076,Anhydroecgonine-peak1,C9 H13 N O2,167.09465,Upregulated,2.519727068447061,0.006852190079558786

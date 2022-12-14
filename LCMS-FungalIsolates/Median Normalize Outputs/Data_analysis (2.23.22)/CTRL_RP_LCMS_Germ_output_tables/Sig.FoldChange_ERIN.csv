@@ -1,0 +1,16 @@
+FeatureID,name4plot,KEGG Pathways,Formula,MW,Comment,log2FC,pval
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Metabolic pathways,C6 H8 O3,128.04731,Downregulated,-2.7054775480631377,2.2214488888707142e-4
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Microbial metabolism in diverse environments,C6 H8 O3,128.04731,Downregulated,-2.7054775480631377,2.2214488888707142e-4
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Degradation of aromatic compounds,C6 H8 O3,128.04731,Downregulated,-2.7054775480631377,2.2214488888707142e-4
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Aminobenzoate degradation,C6 H8 O3,128.04731,Downregulated,-2.7054775480631377,2.2214488888707142e-4
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Other,C6 H8 O3,128.04731,Downregulated,-2.7054775480631377,2.2214488888707142e-4
+Feature0926,Feature0926,NA,C24 H40 N8 O7,552.30201,Upregulated,6.4044496213473945,0.03692915171210825
+Feature0797,6-Methoxyquinoline,Metabolic pathways,C10 H9 N O,159.06843,Upregulated,3.657190722051893,0.029272869873778647
+Feature0797,6-Methoxyquinoline,Biosynthesis of secondary metabolites,C10 H9 N O,159.06843,Upregulated,3.657190722051893,0.029272869873778647
+Feature0797,6-Methoxyquinoline,Biosynthesis of various antibiotics,C10 H9 N O,159.06843,Upregulated,3.657190722051893,0.029272869873778647
+Feature0797,6-Methoxyquinoline,Other,C10 H9 N O,159.06843,Upregulated,3.657190722051893,0.029272869873778647
+Feature0670,Leu-Gly-Pro-peak3,NA,C13 H23 N3 O4,285.16888,Upregulated,2.242805815477654,0.02438229174090508
+Feature0405,Feature0405,NA,C21 H38 N4 O7,458.27426,Upregulated,4.2882302880955585,0.0394654559274373
+Feature0349,Feature0349,NA,C22 H41 N5 O5,455.31091,Upregulated,4.106662787244631,0.03996042498835168
+Feature0182,Feature0182,NA,C15 H27 N3 O5,329.19521,Upregulated,2.0404917325915566,0.04854588791034886
+Feature0004,"3,4-Dihydroxy-7-methoxy-2,2,6-trimethyl-2,3,4,6-tetrahydro-5H-pyrano[3,2-c]quinolin-5-one",NA,C16 H19 N O5,305.12642,Downregulated,-2.754732669084922,7.049666854613974e-5

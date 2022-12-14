@@ -1,0 +1,1813 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+---
+title: "Isolate 1154 HILIC Differential Analysis"
+output: html_notebook
+---
+---
+title: "Isolate 1154 HILIC Differential Analysis"
+author: "Taylor A Portman"
+date: "2/16/2022"
+output: html_document
+---
+---
+title: "3_Differential Analysis"
+author: "Christian Ayala"
+date: "3/19/2021"
+output: html_document
+---
+
+This Notebook is to perform the differential analysis of the normalized AUC from *Compound Discoverer*.
+
+# 1. Importing Libraries
+
+```{r libraries, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggrepel)
+library(ggsci)
+library(pheatmap)
+library(RColorBrewer)
+library(readxl)
+library(UpSetR)
+source('functions_cdis_diff.R')
+```
+
+# 2. Import data
+
+Set if the data to be used is going to be labeled or unlabeled
+
+```{r}
+# Flag for labeled / unlabeled data, set TRUE or FALSE
+
+label = FALSE
+```
+
+Because differential analysis includes the calculations of means, the data to be used in this section is the normalized untransformed data
+
+```{r set_path, message=FALSE, warning=FALSE}
+# set path variables
+project_dir <- getwd()
+project_name <- 'Fungal Symbionts HILIC'
+figures_dir <- file.path(project_dir, paste0(project_name, '_output_figures'))
+tables_dir <- file.path(project_dir,  paste0(project_name, '_output_tables'))
+norm_auc_table_file <- file.path(tables_dir, 'normalized_untransformed_auc_table.csv')
+
+# If the flag was setted before, nothing needs to be changed here, the correct file will be automatically used
+if(label == TRUE){
+  compounds_table_file <- file.path(tables_dir, 'compounds_table.csv')
+}else{
+  compounds_table_file <- file.path(tables_dir, 'gap_filled_compounds_table.csv')
+}
+
+# Load auc_table
+
+norm.matrix <- read_csv(norm_auc_table_file)
+norm.matrix <- column_to_rownames(norm.matrix, var = '...1')
+
+# Load compounds table and add a column that has names for identified compounds and FeatureID for the rest (for plotting purpouses)
+
+compounds_table <- read_csv(compounds_table_file)
+
+# Import metadata and fix names
+metadata_file <- file.path(tables_dir, 'fixed_metadata.csv')
+metadata <- read_csv(metadata_file)
+
+compounds_table<- left_join(compounds_table, metadata, by= 'SampleID')
+compounds_table<- filter(compounds_table, Fungi== '1154')
+
+# Import NMR data
+#nmr_file <- file.path(project_dir, 'data', 'Saleska_BOG_concentrations_ALL.xlsx')
+#nmr_table <- read_xlsx(nmr_file, skip = 4)
+#colnames(nmr_table) <- str_remove(colnames(nmr_table), '_1D.*')
+#colnames(nmr_table)[1] <- 'Name'
+
+```
+
+# 3. Calculate ratios and log2fold-change
+
+## 3.1 Get samples per each treatment
+
+```{r}
+
+# Get the average AUC per each of the treatments
+## Get samples per treatment
+
+BOCU.samples <- get_samples(metadata, Treatment = 'Plant', value = 'BOCU')
+CTRL.samples <- get_samples(metadata, Treatment = 'Plant', value = 'CTRL')
+ERIN.samples <- get_samples(metadata, Treatment = 'Plant', value = 'ERIN')
+CTRL.samples <- get_samples(metadata, Treatment = 'Plant', value = 'CTRL')
+LEDU.samples <- get_samples(metadata, Treatment = 'Plant', value = 'LEDU')
+```
+
+## 3.2 Get table of differentially expressed features per each comparison
+
+The following function will calculate ratio, log2FC, p values and adjusted pvalues. If no replicates are available for EACH treatment please use the get_diff_table_no_pval() function
+
+```{r}
+
+# The following function will calculate ratio, log2FC, p values and adjusted pvalues. If no replicates are available for EACH treatment
+# please use the get_diff_table_no_pval() function
+
+BOCU_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = BOCU.samples, control.sample_list = CTRL.samples)
+ERLE_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = ERLE.samples, control.sample_list = CTRL.samples)
+ERIN_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = ERIN.samples, control.sample_list = CTRL.samples)
+LEDU_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = LEDU.samples, control.sample_list = CTRL.samples)
+```
+
+Merge differentially expressed features with the annotation
+
+```{r}
+
+# Create dataframes for the up and downregulated metabolites at each time point and merge them with the compound information
+
+BOCU_to_CTRL.diff_table <- compounds_table %>% 
+  select(-contains('Annotation Source:'), - contains('Results'), -SampleID, -AUC,  -Fungi, - Plant) %>% 
+  right_join(BOCU_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+BOCU_to_CTRL.diff_table$Comment <- factor(BOCU_to_CTRL.diff_table$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_BOCU.csv')
+write_csv(BOCU_to_CTRL.diff_table, table_file )
+
+ERLE_to_CTRL.diff_table<- compounds_table %>% 
+  select(-contains('Annotation Source:'), - contains('Results'), -SampleID, -AUC, -Plant, - Fungi) %>%
+  right_join(ERLE_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+ERLE_to_CTRL.diff_table$Comment <- factor(ERLE_to_CTRL.diff_table$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_CTRL.csv')
+write_csv(ERLE_to_CTRL.diff_table, table_file )
+
+ERIN_to_CTRL.diff_table <- compounds_table %>% 
+  select(-contains('Annotation Source:'), - contains('Results'), -SampleID, -AUC, -Plant, -Fungi) %>% 
+  right_join(ERIN_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+ERIN_to_CTRL.diff_table$Comment <- factor(ERIN_to_CTRL.diff_table$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_ERIN.csv')
+write_csv(ERIN_to_CTRL.diff_table, table_file )
+
+
+LEDU_to_CTRL.diff_table <- compounds_table %>% 
+  select(-contains('Annotation Source:'), - contains('Results'), -SampleID, -AUC, -Plant, -Fungi) %>% 
+  right_join(LEDU_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+LEDU_to_CTRL.diff_table$Comment <- factor(LEDU_to_CTRL.diff_table$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_LEDU.csv')
+write_csv(LEDU_to_CTRL.diff_table, table_file )
+
+```
+
+Extract most differentially expressed features
+
+```{r warning=FALSE}
+
+# Extract significant features of each comparison based on adjusted pvalue
+sig_features <- c(BOCU_to_CTRL.diff_table$FeatureID[BOCU_to_CTRL.diff_table$pval.adj < 0.05],
+                  ERLE_to_CTRL.diff_table$FeatureID[ERLE_to_CTRL.diff_table$pval.adj < 0.05],
+                  ERIN_to_CTRL.diff_table$FeatureID[ERIN_to_CTRL.diff_table$pval.adj < 0.05],
+                  LEDU_to_CTRL.diff_table$FeatureID[LEDU_to_CTRL.diff_table$pval.adj < 0.05])
+
+sig_features <- unique(sig_features)
+```
+
+
+# 4. Plots of dysregulated features
+
+## 4.1 Number of dysregulated features in each group
+
+```{r}
+
+num_diff_features <- tibble(Comparison = rep(c('BOCU_to_CTRL', 'ERLE_to_CTRL', 'ERIN_to_CTRL'), each = 2),
+                            Type = rep(c('Name', 'No name'), 3),
+                            count = 0)
+num_diff_features$Type <- factor(num_diff_features$Type, levels = c('No name', 'Name'))
+
+num_diff_features[1, 3] <- sum(BOCU_to_CTRL.diff_table$pval.adj < 0.05 & !is.na(BOCU_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[2, 3] <- sum(BOCU_to_CTRL.diff_table$pval.adj < 0.05 & is.na(BOCU_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[3, 3] <- sum(ERLE_to_CTRL.diff_table$pval.adj < 0.05 & !is.na(ERLE_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[4, 3] <- sum(ERLE_to_CTRL.diff_table$pval.adj < 0.05 & is.na(ERLE_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[5, 3] <- sum(ERIN_to_CTRL.diff_table$pval.adj < 0.05 & !is.na(ERIN_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[6, 3] <- sum(ERIN_to_CTRL.diff_table$pval.adj < 0.05 & is.na(ERIN_to_CTRL.diff_table$Name), na.rm = TRUE)
+
+
+num_diff_plot <- plot_col(num_diff_features, count, Comparison, Type)
+num_diff_plot
+
+figure_file <- file.path(figures_dir, 'Num_diff_features.png')
+ggsave(figure_file, num_diff_plot, dpi = 300)
+```
+
+## 4.2 Dysregulated features shared at different timepoints
+
+An **upset plot** is used instead of a Venn Diagram asi it provides a better visualization of the number of figures that are being shared among groups
+
+```{r}
+# Filter diff tables by pval.adj
+
+BOCU.sig <- BOCU_to_CTRL.diff_table %>% 
+  filter(pval.adj < 0.05)
+ERLE.sig <- ERLE_to_CTRL.diff_table %>% 
+  filter(pval.adj < 0.05)
+ERIN.sig <- ERIN_to_CTRL.diff_table %>% 
+  filter(pval.adj < 0.05)
+
+# Get list of features at each time point for each of the cases
+BOCU.upregulated <- get_vectors(BOCU.sig, 'Comment', 'Upregulated', 'FeatureID')
+BOCU.downregulated <- get_vectors(BOCU.sig, 'Comment', 'Downregulated', 'FeatureID')
+BOCU.not_in_control <- get_vectors(BOCU.sig, 'Comment', 'Not present in control', 'FeatureID')
+BOCU.only_in_control <- get_vectors(BOCU.sig, 'Comment', 'Only present in control', 'FeatureID')
+
+ERLE.upregulated <- get_vectors(ERLE.sig, 'Comment', 'Upregulated', 'FeatureID')
+ERLE.downregulated <- get_vectors(ERLE.sig, 'Comment', 'Downregulated', 'FeatureID')
+ERLE.not_in_control <- get_vectors(ERLE.sig, 'Comment', 'Not present in control', 'FeatureID')
+ERLE.only_in_control <- get_vectors(ERLE.sig, 'Comment', 'Only present in control', 'FeatureID')
+
+ERIN.upregulated <- get_vectors(ERIN.sig, 'Comment', 'Upregulated', 'FeatureID')
+ERIN.downregulated <- get_vectors(ERIN.sig, 'Comment', 'Downregulated', 'FeatureID')
+ERIN.not_in_control <- get_vectors(ERIN.sig, 'Comment', 'Not present in control', 'FeatureID')
+ERIN.only_in_control <- get_vectors(ERIN.sig, 'Comment', 'Only present in control', 'FeatureID')
+```
+
+```{r fig.height=8}
+upset_input <- list(BOCU.upregulated = BOCU.upregulated,
+                    BOCU.downregulated = BOCU.downregulated,
+                    BOCU.not_in_control = BOCU.not_in_control,
+                    BOCU.only_in_control = BOCU.only_in_control,
+                    ERLE.upregulated = ERLE.upregulated,
+                    ERLE.downregulated = ERLE.downregulated,
+                    ERLE.not_in_control = ERLE.not_in_control,
+                    ERLE.only_in_control = ERLE.only_in_control,
+                    ERIN.upregulated = ERIN.upregulated,
+                    ERIN.downregulated = ERIN.downregulated,
+                    ERIN.not_in_control = ERIN.not_in_control,
+                    ERIN.only_in_control = ERIN.only_in_control)
+
+upset_metadata <- data.frame(sets = as.vector(names(upset_input)),
+                         Time = rep(c('BOCU', 'CTRL', 'ERIN'), each = 4))
+
+upset_features <- upset(fromList(upset_input), order.by = "freq", cutoff = 1, nsets = 12,
+                    mainbar.y.label = 'Number of shared features', sets.x.label = 'Number of features',
+                    text.scale = c(1.5, 1, 1.5, 1, 1.3, 1.3),
+                    set.metadata = list(data = upset_metadata, 
+                                        plots = list(list(type = 'matrix_rows', column = 'Fungi', 
+                                                          colors = c(BOCU = '#EFC000FF', CTRL = '#868686FF', ERIN = '#CD534CFF')))))
+upset_features
+
+figure_file <- file.path(figures_dir, 'Upset-KEGG.png')
+png(figure_file, width = 800, height = 800)
+upset_features
+dev.off()
+```
+
+## 4.2 Volcano plots
+
+```{r warning=FALSE}
+
+lfc.t <- 2
+pval.t <- 0.05
+
+BOCU_to_CTRL_volcano <- plot_volcano(BOCU_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'BOCU vs CTRL')
+BOCU_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'BOCU_CTRL_volcano.png')
+ggsave(figure_file, BOCU_to_CTRL_volcano, dpi=300)
+
+
+ERLE_to_CTRL_volcano <- plot_volcano(ERLE_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'ERLE vs CTRL')
+ERLE_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'ERLE_CTRL_volcano.png')
+ggsave(figure_file, ERLE_to_CTRL_volcano, dpi=300)
+
+ERIN_to_CTRL_volcano <- plot_volcano(ERIN_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'ERIN vs CTRL')
+ERIN_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'ERIN_CTRL_volcano.png')
+ggsave(figure_file, ERIN_to_CTRL_volcano, dpi=300)
+
+LEDU_to_CTRL_volcano <- plot_volcano(LEDU_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'LEDU vs CTRL')
+LEDU_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'LEDU_CTRL_volcano.png')
+ggsave(figure_file, LEDU_to_CTRL_volcano, dpi=300)
+```
+
+## 4.3 Van Krevelen Diagrams of dysregulated features
+
+**Dysregulated features at BOCU**
+
+```{r}
+
+BOCU_vank <- plot_vank(BOCU.sig, Class, Comment)
+
+BOCU_vank
+
+figure_file <- file.path(figures_dir, 'DE_vank_BOCU.png')
+ggsave(figure_file, BOCU_vank, width=30, height=50, unit='cm')
+```
+
+**Dysregulated features at CTRL**
+
+```{r}
+CTRL_vank <- plot_vank(ERLE.sig, Class, Comment)
+CTRL_vank
+
+figure_file <- file.path(figures_dir, 'DE_vank_CTRL.png')
+ggsave(figure_file, CTRL_vank,width=30, height=50, unit='cm')
+```
+
+**Dysregulated features at ERIN**
+
+```{r}
+ERIN_vank <- plot_vank(ERIN.sig, Class, Comment)
+ERIN_vank
+
+figure_file <- file.path(figures_dir, 'DE_vank_ERIN.png')
+ggsave(figure_file, ERIN_vank,width=30, height=50, unit='cm')
+```
+
+
+## 4.35 Up and down regulated classes for each fungal isolate
+```{r}
+BOCU.count<- BOCU.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Not present in control"| Comment == "Upregulated")
+  
+class.plot<- ggplot(BOCU.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightgreen","black"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1154")
+class.plot
+
+figure_file <- file.path(figures_dir, 'UpregClass_rank_BOCU.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+BOCU.count<- BOCU.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Only present in control"| Comment == "Downregulated")
+  
+class.plot<- ggplot(BOCU.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1154")
+class.plot
+
+figure_file <- file.path(figures_dir, 'DownregClass_rank_BOCU.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+```
+
+
+```{r}
+CTRL.count<- ERLE.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Not present in control"| Comment == "Upregulated")
+  
+class.plot<- ggplot(CTRL.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightgreen","black"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1177")
+class.plot
+
+figure_file <- file.path(figures_dir, 'UpregClass_rank_CTRL.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+CTRL.count<- ERLE.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Only present in control"| Comment == "Downregulated")
+  
+class.plot<- ggplot(CTRL.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1177")
+class.plot
+
+figure_file <- file.path(figures_dir, 'DownregClass_rank_CTRL.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+```
+
+
+
+```{r}
+ERIN.count<- ERIN.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Not present in control"| Comment == "Upregulated")
+  
+class.plot<- ggplot(ERIN.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightgreen","black"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1246")
+class.plot
+
+figure_file <- file.path(figures_dir, 'UpregClass_rank_ERIN.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+ERIN.count<- ERIN.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Only present in control"| Comment == "Downregulated")
+  
+class.plot<- ggplot(ERIN.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1246")
+class.plot
+
+figure_file <- file.path(figures_dir, 'DownregClass_rank_ERIN.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+```
+Looking at counts of Classes that were up or down regulated 
+```{r}
+ERIN.count<- ERIN.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(ERIN.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  #scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1246")
+class.plot
+
+figure_file <- file.path(figures_dir, 'Class_rank_ERIN.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+
+CTRL.count<- ERLE.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(CTRL.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  #scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1177")
+class.plot
+
+figure_file <- file.path(figures_dir, 'Class_rank_CTRL.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+```
+
+
+## 4.355 KEGG Up and Down Regulated 
+```{r}
+
+ERIN.sig$KEGGPathways<-as.factor(ERIN.sig$"KEGG Pathways")  
+ERIN.count<- ERIN.sig%>% 
+  select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  group_by(KEGGPathways, Comment ) %>% 
+  count(KEGGPathways) %>%
+   drop_na(KEGGPathways)%>% filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(ERIN.count)+
+geom_bar(aes(y=KEGGPathways, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  #scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("KEGG Pathways")+
+  labs(title="Up and down regulated KEGG pathways of Isolate 1246")
+class.plot
+
+figure_file <- file.path(figures_dir, 'KEGGrank_ERIN.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+
+ERLE.sig$KEGGPathways<-as.factor(ERLE.sig$"KEGG Pathways")  
+CTRL.count<- ERLE.sig%>% 
+  select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  group_by(KEGGPathways, Comment ) %>% 
+  count(KEGGPathways) %>%
+   drop_na(KEGGPathways)%>% filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(CTRL.count)+
+geom_bar(aes(y=KEGGPathways, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  #scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("KEGG Pathways")+
+  labs(title="Up and down regulated KEGG pathways of Isolate 1177")
+class.plot
+
+figure_file <- file.path(figures_dir, 'KEGGrank_CTRL.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+
+BOCU.sig$KEGGPathways<-as.factor(BOCU.sig$"KEGG Pathways")  
+BOCU.count<- BOCU.sig%>% 
+  select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  group_by(KEGGPathways, Comment ) %>% 
+  count(KEGGPathways) %>%
+   drop_na(KEGGPathways)%>% filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(BOCU.count)+
+geom_bar(aes(y=KEGGPathways, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  #scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("KEGG Pathways")+
+  labs(title="Up and down regulated KEGG pathways of Isolate 1154")
+class.plot
+
+figure_file <- file.path(figures_dir, 'KEGGrank_BOCU.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+```
+## 4.4 GFE plots of dysregulated features
+
+**Dysregulated features at BOCU**
+
+```{r}
+
+my_colors = c('Not present in control' = '#d8365e', 
+              'Upregulated' = '#d34849',
+              'Downregulated' = '#005193',
+              'Only present in control' = '#4b70de')
+
+BOCU_GFE_box <- plot_boxplot(BOCU.sig, Comment, GFE, Comment, my_colors)
+BOCU_GFE_box
+
+figure_file <- file.path(figures_dir, 'DE_GFE_BOCU.png')
+ggsave(figure_file, BOCU_GFE_box,width=30, height=30, unit='cm')
+```
+
+**Dysregulated features at CTRL**
+
+```{r}
+CTRL_GFE_box <- plot_boxplot(ERLE.sig, Comment, GFE, Comment, my_colors)
+CTRL_GFE_box
+
+figure_file <- file.path(figures_dir, 'DE_GFE_CTRL.png')
+ggsave(figure_file, CTRL_GFE_box ,width=30, height=30, unit='cm')
+```
+
+**Dysregulated features at ERIN**
+
+```{r}
+ERIN_GFE_box <- plot_boxplot(ERIN.sig, Comment, GFE, Comment, my_colors)
+ERIN_GFE_box
+
+figure_file <- file.path(figures_dir, 'DE_GFE_ERIN.png')
+ggsave(figure_file, ERIN_GFE_box,width=30, height=30, unit='cm')
+```
+
+
+# 5. Hierarchical clustering analysis using heatmaps
+
+Multiple heatmaps will be plotted, based on the differential expression and if the compounds were or not assigned and structure
+
+### Normalized Area under the curve (AUC) heatmap for all detected features
+
+```{r warning=FALSE}
+
+# Initialize graphical device
+#dev.off()
+
+# Set sampleID as row.names to annotate heatmap
+
+col_annot <- column_to_rownames(metadata, var = 'SampleID') 
+mapcolor <- colorRampPalette(brewer.pal(11, 'RdYlBu'))(100)[100:1]
+
+figure_file <- file.path(figures_dir, 'All_features_heatmap.pdf')
+
+annot_colors <- list(
+  Time = c(CTRL ='#0073C2FF', BOCU = '#EFC000FF', CTRL = '#868686FF', ERIN = '#CD534CFF'),
+  Material = c(Litter = 'green4', Litter_Peat = 'chocolate4'),
+  Origin = c(LC_MS2 = '#0086cb', NMR = '#d23936'))
+
+pdf(figure_file)
+pheatmap(norm.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         show_rownames = FALSE,
+         cutree_cols = 5,
+         main = 'All features (scaled AUC)'
+)
+dev.off()
+```
+
+[Scaled Area under the curve (AUC) heatmap for all detected features](`r toString(figure_file)`)
+
+### Normalized Area under the curve (AUC) heatmap for only features that were identified
+
+```{r}
+# Extract all features that have names
+named_compounds <- compounds_table %>% 
+  select(FeatureID, Name, name4plot) %>% 
+  filter(!is.na(Name)) %>% 
+  distinct()
+
+# Create a matrix of only identified features
+
+named_compounds.matrix <- norm.matrix[rownames(norm.matrix) %in% named_compounds$FeatureID,]
+row.names(named_compounds.matrix) <- compounds_table$name4plot[match(row.names(named_compounds.matrix), compounds_table$FeatureID)]
+
+```
+
+```{r warning=FALSE}
+
+figure_file <- file.path(figures_dir, 'All_identified_features_heatmap.pdf')
+dev.off()
+pdf(figure_file, width = 15, height = 10)
+pheatmap(named_compounds.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         cutree_cols = 4,
+         cutree_rows = 5,
+         fontsize_row = 6,
+         main = 'Identified features (scaled AUC)'
+)
+dev.off()
+```
+
+[Scaled Area under the curve (AUC) heatmap for only features that were identified](`r toString(figure_file)`)
+
+### All dysregulated features
+
+```{r}
+# Create an AUC matrix that contains only features that are differentially expressed
+
+sig_features.matrix <- norm.matrix[row.names(norm.matrix) %in% sig_features, ]
+
+row.names(sig_features.matrix) <- compounds_table$name4plot[match(row.names(sig_features.matrix), compounds_table$FeatureID)]
+```
+
+```{r }
+figure_file <- file.path(figures_dir, 'Dysreg_features_heatmap.pdf')
+
+dev.off()
+pdf(figure_file, width = 10, height = 10)
+pheatmap(sig_features.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         cutree_cols = 4,
+         fontsize_row = 6,
+         main = 'Dysregulated features (scaled AUC)'
+)
+dev.off()
+```
+
+[Scaled Area under the curve (AUC) heatmap for all dysregulated features](`r toString(figure_file)`)
+
+### Dysregulated features that were identified
+
+```{r }
+named_sig_features.matrix <- sig_features.matrix[rownames(sig_features.matrix) %in% named_compounds$Name, ]
+
+figure_file <- file.path(figures_dir, 'Dysreg_identified_features.pdf')
+
+dev.off()
+pdf(figure_file, width = 10)
+pheatmap(named_sig_features.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         cutree_cols = 4,
+         fontsize_row = 8,
+         main = 'Identified dysregulated features (scaled AUC)'
+)
+dev.off()
+```
+
+[Scaled Area under the curve (AUC) heatmap for identified dysregulated features](`r toString(figure_file)`)
+
+# 6. Hierarchical clustering analysis with added NMR data
+
+## 6.1 Differential analysis of NMR data
+
+```{r}
+
+# Create a matrix with NMR data
+nmr.matrix <- nmr_table %>% 
+  column_to_rownames(var = 'Name') %>% 
+  select(metadata$SampleID)
+
+# The following function will calculate ratio, log2FC, p values and adjusted pvalues. If no replicates are available for EACH treatment
+# please use the get_diff_table_no_pval() function
+
+BOCU_to_CTRL.nmr <- get_diff_table(nmr.matrix, control.sample_list = CTRL.samples, treatment.sample_list = BOCU.samples)
+ERLE_to_CTRL.nmr <- get_diff_table(nmr.matrix, control.sample_list = CTRL.samples, treatment.sample_list = CTRL.samples)
+ERIN_to_CTRL.nmr <- get_diff_table(nmr.matrix, control.sample_list = CTRL.samples, treatment.sample_list = ERIN.samples)
+
+```
+
+
+```{r}
+# Join differential NMR data with NMR table
+BOCU_to_CTRL.nmr <- nmr_table %>%
+  select(Name, `KEGG Compound ID`, Formula, Weight, InChI) %>% 
+  right_join(BOCU_to_CTRL.nmr, by = c('Name' = 'FeatureID')) %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+BOCU_to_CTRL.nmr$Comment <- factor(BOCU_to_CTRL.nmr$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_NMR_BOCU.csv')
+write_csv(BOCU_to_CTRL.nmr, table_file )
+
+ERLE_to_CTRL.nmr <- nmr_table %>%
+  select(Name, `KEGG Compound ID`, Formula, Weight, InChI) %>% 
+  right_join(ERLE_to_CTRL.nmr, by = c('Name' = 'FeatureID')) %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+ERLE_to_CTRL.nmr$Comment <- factor(ERLE_to_CTRL.nmr$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_NMR_CTRL.csv')
+write_csv(ERLE_to_CTRL.nmr, table_file )
+
+ERIN_to_CTRL.nmr <- nmr_table %>%
+  select(Name, `KEGG Compound ID`, Formula, Weight, InChI) %>% 
+  right_join(ERIN_to_CTRL.nmr, by = c('Name' = 'FeatureID')) %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+ERIN_to_CTRL.nmr$Comment <- factor(ERIN_to_CTRL.nmr$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_NMR_ERIN.csv')
+write_csv(ERIN_to_CTRL.nmr, table_file )
+```
+
+## 6.2 Heatmaps including NMR data
+
+```{r}
+# Join NMR data with dysregulated LC data
+sig_nmr.matrix <- rbind(sig_features.matrix, nmr.matrix)
+```
+
+```{r}
+
+row_annot <- tibble(Name = row.names(sig_nmr.matrix)) %>% 
+  mutate(Origin = ifelse(Name %in% row.names(nmr.matrix), 'NMR', 'LC_MS2')) %>% 
+  column_to_rownames(var = 'Name')
+
+figure_file <- file.path(figures_dir, 'Dysreg_features_and_NMR.pdf')
+dev.off()
+pdf(figure_file, width = 15, height = 15)
+pheatmap(sig_nmr.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_row = row_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         cutree_cols = 4,
+         cutree_rows = 5,
+         fontsize_row = 6,
+         main = 'Dysregulated features and NMR data'
+)
+dev.off()
+```
+
+[Dysregulated features and NMR data](`r toString(figure_file)`)
+
+```{r}
+# Join NMR data with dysregulated LC data
+named_sig_nmr.matrix <- rbind(named_sig_features.matrix, nmr.matrix)
+```
+
+```{r}
+figure_file <- file.path(figures_dir, 'Dysreg_identified_features_and_NMR.pdf')
+dev.off()
+pdf(figure_file, width = 15, height = 10)
+pheatmap(named_sig_nmr.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_row = row_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         cutree_cols = 4,
+         cutree_rows = 5,
+         fontsize_row = 6,
+         main = 'Identified dysregulated features and NMR data'
+)
+dev.off()
+```
+
+[Identified dysregulated features and NMR data](`r toString(figure_file)`)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+---
+title: "Isolate 1154 HILIC Differential Analysis"
+output: html_notebook
+---
+---
+title: "Isolate 1154 HILIC Differential Analysis"
+author: "Taylor A Portman"
+date: "2/16/2022"
+output: html_document
+---
+---
+title: "3_Differential Analysis"
+author: "Christian Ayala"
+date: "3/19/2021"
+output: html_document
+---
+
+This Notebook is to perform the differential analysis of the normalized AUC from *Compound Discoverer*.
+
+# 1. Importing Libraries
+
+```{r libraries, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggrepel)
+library(ggsci)
+library(pheatmap)
+library(RColorBrewer)
+library(readxl)
+library(UpSetR)
+source('functions_cdis_diff.R')
+```
+
+# 2. Import data
+
+Set if the data to be used is going to be labeled or unlabeled
+
+```{r}
+# Flag for labeled / unlabeled data, set TRUE or FALSE
+
+label = FALSE
+```
+
+Because differential analysis includes the calculations of means, the data to be used in this section is the normalized untransformed data
+
+```{r set_path, message=FALSE, warning=FALSE}
+# set path variables
+project_dir <- getwd()
+project_name <- 'Fungal Symbionts HILIC'
+figures_dir <- file.path(project_dir, paste0(project_name, '_output_figures'))
+tables_dir <- file.path(project_dir,  paste0(project_name, '_output_tables'))
+norm_auc_table_file <- file.path(tables_dir, 'normalized_untransformed_auc_table.csv')
+
+# If the flag was setted before, nothing needs to be changed here, the correct file will be automatically used
+if(label == TRUE){
+  compounds_table_file <- file.path(tables_dir, 'compounds_table.csv')
+}else{
+  compounds_table_file <- file.path(tables_dir, 'gap_filled_compounds_table.csv')
+}
+
+# Load auc_table
+
+norm.matrix <- read_csv(norm_auc_table_file)
+norm.matrix <- column_to_rownames(norm.matrix, var = '...1')
+
+# Load compounds table and add a column that has names for identified compounds and FeatureID for the rest (for plotting purpouses)
+
+compounds_table <- read_csv(compounds_table_file)
+
+# Import metadata and fix names
+metadata_file <- file.path(tables_dir, 'fixed_metadata.csv')
+metadata <- read_csv(metadata_file)
+
+compounds_table<- left_join(compounds_table, metadata, by= 'SampleID')
+compounds_table<- filter(compounds_table, Fungi== '1154')
+
+# Import NMR data
+#nmr_file <- file.path(project_dir, 'data', 'Saleska_BOG_concentrations_ALL.xlsx')
+#nmr_table <- read_xlsx(nmr_file, skip = 4)
+#colnames(nmr_table) <- str_remove(colnames(nmr_table), '_1D.*')
+#colnames(nmr_table)[1] <- 'Name'
+
+```
+
+# 3. Calculate ratios and log2fold-change
+
+## 3.1 Get samples per each treatment
+
+```{r}
+
+# Get the average AUC per each of the treatments
+## Get samples per treatment
+
+BOCU.samples <- get_samples(metadata, Treatment = 'Plant', value = 'BOCU')
+CTRL.samples <- get_samples(metadata, Treatment = 'Plant', value = 'CTRL')
+ERIN.samples <- get_samples(metadata, Treatment = 'Plant', value = 'ERIN')
+CTRL.samples <- get_samples(metadata, Treatment = 'Plant', value = 'CTRL')
+LEDU.samples <- get_samples(metadata, Treatment = 'Plant', value = 'LEDU')
+```
+
+## 3.2 Get table of differentially expressed features per each comparison
+
+The following function will calculate ratio, log2FC, p values and adjusted pvalues. If no replicates are available for EACH treatment please use the get_diff_table_no_pval() function
+
+```{r}
+
+# The following function will calculate ratio, log2FC, p values and adjusted pvalues. If no replicates are available for EACH treatment
+# please use the get_diff_table_no_pval() function
+
+BOCU_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = BOCU.samples, control.sample_list = CTRL.samples)
+ERLE_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = CTRL.samples, control.sample_list = CTRL.samples)
+ERIN_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = ERIN.samples, control.sample_list = CTRL.samples)
+LEDU_to_CTRL.diff_table <- get_diff_table(norm.matrix, treatment.sample_list = LEDU.samples, control.sample_list = CTRL.samples)
+```
+
+Merge differentially expressed features with the annotation
+
+```{r}
+
+# Create dataframes for the up and downregulated metabolites at each time point and merge them with the compound information
+
+BOCU_to_CTRL.diff_table <- compounds_table %>% 
+  select(-contains('Annotation Source:'), - contains('Results'), -SampleID, -AUC,  -Fungi, - Plant) %>% 
+  right_join(BOCU_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+BOCU_to_CTRL.diff_table$Comment <- factor(BOCU_to_CTRL.diff_table$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_BOCU.csv')
+write_csv(BOCU_to_CTRL.diff_table, table_file )
+
+ERLE_to_CTRL.diff_table<- compounds_table %>% 
+  select(-contains('Annotation Source:'), - contains('Results'), -SampleID, -AUC, -Plant, - Fungi) %>%
+  right_join(ERLE_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+ERLE_to_CTRL.diff_table$Comment <- factor(ERLE_to_CTRL.diff_table$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_CTRL.csv')
+write_csv(ERLE_to_CTRL.diff_table, table_file )
+
+ERIN_to_CTRL.diff_table <- compounds_table %>% 
+  select(-contains('Annotation Source:'), - contains('Results'), -SampleID, -AUC, -Plant, -Fungi) %>% 
+  right_join(ERIN_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+ERIN_to_CTRL.diff_table$Comment <- factor(ERIN_to_CTRL.diff_table$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_ERIN.csv')
+write_csv(ERIN_to_CTRL.diff_table, table_file )
+
+
+LEDU_to_CTRL.diff_table <- compounds_table %>% 
+  select(-contains('Annotation Source:'), - contains('Results'), -SampleID, -AUC, -Plant, -Fungi) %>% 
+  right_join(LEDU_to_CTRL.diff_table, by = 'FeatureID') %>% 
+  distinct() %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+LEDU_to_CTRL.diff_table$Comment <- factor(LEDU_to_CTRL.diff_table$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_LEDU.csv')
+write_csv(LEDU_to_CTRL.diff_table, table_file )
+
+```
+
+Extract most differentially expressed features
+
+```{r warning=FALSE}
+
+# Extract significant features of each comparison based on adjusted pvalue
+sig_features <- c(BOCU_to_CTRL.diff_table$FeatureID[BOCU_to_CTRL.diff_table$pval.adj < 0.05],
+                  ERLE_to_CTRL.diff_table$FeatureID[ERLE_to_CTRL.diff_table$pval.adj < 0.05],
+                  ERIN_to_CTRL.diff_table$FeatureID[ERIN_to_CTRL.diff_table$pval.adj < 0.05])
+                  LEDU_to_CTRL.diff_table$FeatureID[LEDU_to_CTRL.diff_table$pval.adj < 0.05])
+
+sig_features <- unique(sig_features)
+```
+
+
+# 4. Plots of dysregulated features
+
+## 4.1 Number of dysregulated features in each group
+
+```{r}
+
+num_diff_features <- tibble(Comparison = rep(c('BOCU_to_CTRL', 'ERLE_to_CTRL', 'ERIN_to_CTRL'), each = 2),
+                            Type = rep(c('Name', 'No name'), 3),
+                            count = 0)
+num_diff_features$Type <- factor(num_diff_features$Type, levels = c('No name', 'Name'))
+
+num_diff_features[1, 3] <- sum(BOCU_to_CTRL.diff_table$pval.adj < 0.05 & !is.na(BOCU_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[2, 3] <- sum(BOCU_to_CTRL.diff_table$pval.adj < 0.05 & is.na(BOCU_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[3, 3] <- sum(ERLE_to_CTRL.diff_table$pval.adj < 0.05 & !is.na(ERLE_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[4, 3] <- sum(ERLE_to_CTRL.diff_table$pval.adj < 0.05 & is.na(ERLE_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[5, 3] <- sum(ERIN_to_CTRL.diff_table$pval.adj < 0.05 & !is.na(ERIN_to_CTRL.diff_table$Name), na.rm = TRUE)
+num_diff_features[6, 3] <- sum(ERIN_to_CTRL.diff_table$pval.adj < 0.05 & is.na(ERIN_to_CTRL.diff_table$Name), na.rm = TRUE)
+
+
+num_diff_plot <- plot_col(num_diff_features, count, Comparison, Type)
+num_diff_plot
+
+figure_file <- file.path(figures_dir, 'Num_diff_features.png')
+ggsave(figure_file, num_diff_plot, dpi = 300)
+```
+
+## 4.2 Dysregulated features shared at different timepoints
+
+An **upset plot** is used instead of a Venn Diagram asi it provides a better visualization of the number of figures that are being shared among groups
+
+```{r}
+# Filter diff tables by pval.adj
+
+BOCU.sig <- BOCU_to_CTRL.diff_table %>% 
+  filter(pval.adj < 0.05)
+ERLE.sig <- ERLE_to_CTRL.diff_table %>% 
+  filter(pval.adj < 0.05)
+ERIN.sig <- ERIN_to_CTRL.diff_table %>% 
+  filter(pval.adj < 0.05)
+
+# Get list of features at each time point for each of the cases
+BOCU.upregulated <- get_vectors(BOCU.sig, 'Comment', 'Upregulated', 'FeatureID')
+BOCU.downregulated <- get_vectors(BOCU.sig, 'Comment', 'Downregulated', 'FeatureID')
+BOCU.not_in_control <- get_vectors(BOCU.sig, 'Comment', 'Not present in control', 'FeatureID')
+BOCU.only_in_control <- get_vectors(BOCU.sig, 'Comment', 'Only present in control', 'FeatureID')
+
+ERLE.upregulated <- get_vectors(ERLE.sig, 'Comment', 'Upregulated', 'FeatureID')
+ERLE.downregulated <- get_vectors(ERLE.sig, 'Comment', 'Downregulated', 'FeatureID')
+ERLE.not_in_control <- get_vectors(ERLE.sig, 'Comment', 'Not present in control', 'FeatureID')
+ERLE.only_in_control <- get_vectors(ERLE.sig, 'Comment', 'Only present in control', 'FeatureID')
+
+ERIN.upregulated <- get_vectors(ERIN.sig, 'Comment', 'Upregulated', 'FeatureID')
+ERIN.downregulated <- get_vectors(ERIN.sig, 'Comment', 'Downregulated', 'FeatureID')
+ERIN.not_in_control <- get_vectors(ERIN.sig, 'Comment', 'Not present in control', 'FeatureID')
+ERIN.only_in_control <- get_vectors(ERIN.sig, 'Comment', 'Only present in control', 'FeatureID')
+```
+
+```{r fig.height=8}
+upset_input <- list(BOCU.upregulated = BOCU.upregulated,
+                    BOCU.downregulated = BOCU.downregulated,
+                    BOCU.not_in_control = BOCU.not_in_control,
+                    BOCU.only_in_control = BOCU.only_in_control,
+                    ERLE.upregulated = ERLE.upregulated,
+                  ERLE.downregulated = ERLE.downregulated,
+                    ERLE.not_in_control = ERLE.not_in_control,
+                    ERLE.only_in_control = ERLE.only_in_control,
+                    ERIN.upregulated = ERIN.upregulated,
+                    ERIN.downregulated = ERIN.downregulated,
+                    ERIN.not_in_control = ERIN.not_in_control,
+                    ERIN.only_in_control = ERIN.only_in_control)
+
+upset_metadata <- data.frame(sets = as.vector(names(upset_input)),
+                         Time = rep(c('BOCU', 'CTRL', 'ERIN'), each = 4))
+
+upset_features <- upset(fromList(upset_input), order.by = "freq", cutoff = 1, nsets = 12,
+                    mainbar.y.label = 'Number of shared features', sets.x.label = 'Number of features',
+                    text.scale = c(1.5, 1, 1.5, 1, 1.3, 1.3),
+                    set.metadata = list(data = upset_metadata, 
+                                        plots = list(list(type = 'matrix_rows', column = 'Time', 
+                                                          colors = c(BOCU = '#EFC000FF', CTRL = '#868686FF', ERIN = '#CD534CFF')))))
+upset_features
+
+figure_file <- file.path(figures_dir, 'Upset-KEGG.png')
+png(figure_file, width = 800, height = 800)
+upset_features
+dev.off()
+```
+
+## 4.2 Volcano plots
+
+```{r warning=FALSE}
+
+lfc.t <- 2
+pval.t <- 0.05
+
+BOCU_to_CTRL_volcano <- plot_volcano(BOCU_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'BOCU vs CTRL')
+BOCU_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'BOCU_CTRL_volcano.png')
+ggsave(figure_file, BOCU_to_CTRL_volcano, dpi=300)
+
+
+ERLE_to_CTRL_volcano <- plot_volcano(ERLE_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'CTRL vs CTRL')
+ERLE_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'CTRL_CTRL_volcano.png')
+ggsave(figure_file, ERLE_to_CTRL_volcano, dpi=300)
+
+ERIN_to_CTRL_volcano <- plot_volcano(ERIN_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'ERIN vs CTRL')
+ERIN_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'ERIN_CTRL_volcano.png')
+ggsave(figure_file, ERIN_to_CTRL_volcano, dpi=300)
+
+LEDU_to_CTRL_volcano <- plot_volcano(LEDU_to_CTRL.diff_table, log2FC, pval.adj, lfc.t, pval.t) +
+  labs(subtitle = 'LEDU vs CTRL')
+LEDU_to_CTRL_volcano
+
+figure_file <- file.path(figures_dir, 'LEDU_CTRL_volcano.png')
+ggsave(figure_file, LEDU_to_CTRL_volcano, dpi=300)
+```
+
+## 4.3 Van Krevelen Diagrams of dysregulated features
+
+**Dysregulated features at BOCU**
+
+```{r}
+
+BOCU_vank <- plot_vank(BOCU.sig, Class, Comment)
+
+BOCU_vank
+
+figure_file <- file.path(figures_dir, 'DE_vank_BOCU.png')
+ggsave(figure_file, BOCU_vank, width=30, height=50, unit='cm')
+```
+
+**Dysregulated features at CTRL**
+
+```{r}
+CTRL_vank <- plot_vank(ERLE.sig, Class, Comment)
+CTRL_vank
+
+figure_file <- file.path(figures_dir, 'DE_vank_CTRL.png')
+ggsave(figure_file, CTRL_vank,width=30, height=50, unit='cm')
+```
+
+**Dysregulated features at ERIN**
+
+```{r}
+ERIN_vank <- plot_vank(ERIN.sig, Class, Comment)
+ERIN_vank
+
+figure_file <- file.path(figures_dir, 'DE_vank_ERIN.png')
+ggsave(figure_file, ERIN_vank,width=30, height=50, unit='cm')
+```
+
+
+## 4.35 Up and down regulated classes for each fungal isolate
+```{r}
+BOCU.count<- BOCU.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Not present in control"| Comment == "Upregulated")
+  
+class.plot<- ggplot(BOCU.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightgreen","black"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1154")
+class.plot
+
+figure_file <- file.path(figures_dir, 'UpregClass_rank_BOCU.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+BOCU.count<- BOCU.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Only present in control"| Comment == "Downregulated")
+  
+class.plot<- ggplot(BOCU.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1154")
+class.plot
+
+figure_file <- file.path(figures_dir, 'DownregClass_rank_BOCU.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+```
+
+
+```{r}
+CTRL.count<- ERLE.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Not present in control"| Comment == "Upregulated")
+  
+class.plot<- ggplot(CTRL.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightgreen","black"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1177")
+class.plot
+
+figure_file <- file.path(figures_dir, 'UpregClass_rank_CTRL.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+CTRL.count<- ERLE.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Only present in control"| Comment == "Downregulated")
+  
+class.plot<- ggplot(CTRL.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1177")
+class.plot
+
+figure_file <- file.path(figures_dir, 'DownregClass_rank_CTRL.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+```
+
+
+
+```{r}
+ERIN.count<- ERIN.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Not present in control"| Comment == "Upregulated")
+  
+class.plot<- ggplot(ERIN.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightgreen","black"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1246")
+class.plot
+
+figure_file <- file.path(figures_dir, 'UpregClass_rank_ERIN.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+ERIN.count<- ERIN.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment == "Only present in control"| Comment == "Downregulated")
+  
+class.plot<- ggplot(ERIN.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1246")
+class.plot
+
+figure_file <- file.path(figures_dir, 'DownregClass_rank_ERIN.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+```
+Looking at counts of Classes that were up or down regulated 
+```{r}
+ERIN.count<- ERIN.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(ERIN.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  #scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1246")
+class.plot
+
+figure_file <- file.path(figures_dir, 'Class_rank_ERIN.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+
+CTRL.count<- ERLE.sig%>% 
+    select(FeatureID, Class, Comment, pval, pval.adj)%>%
+    count(Class, Comment)%>%
+    filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(CTRL.count)+
+geom_bar(aes(y=Class, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  #scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("Class")+
+  labs(title="Class ranks of Isolate 1177")
+class.plot
+
+figure_file <- file.path(figures_dir, 'Class_rank_CTRL.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+```
+
+
+## 4.355 KEGG Up and Down Regulated 
+```{r}
+
+ERIN.sig$KEGGPathways<-as.factor(ERIN.sig$"KEGG Pathways")  
+ERIN.count<- ERIN.sig%>% 
+  select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  group_by(KEGGPathways, Comment ) %>% 
+  count(KEGGPathways) %>%
+   drop_na(KEGGPathways)%>% filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(ERIN.count)+
+geom_bar(aes(y=KEGGPathways, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  #scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("KEGG Pathways")+
+  labs(title="Up and down regulated KEGG pathways of Isolate 1246")
+class.plot
+
+figure_file <- file.path(figures_dir, 'KEGGrank_ERIN.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+
+ERLE.sig$KEGGPathways<-as.factor(ERLE.sig$"KEGG Pathways")  
+CTRL.count<- ERLE.sig%>% 
+  select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  group_by(KEGGPathways, Comment ) %>% 
+  count(KEGGPathways) %>%
+   drop_na(KEGGPathways)%>% filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(CTRL.count)+
+geom_bar(aes(y=KEGGPathways, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  #scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("KEGG Pathways")+
+  labs(title="Up and down regulated KEGG pathways of Isolate 1177")
+class.plot
+
+figure_file <- file.path(figures_dir, 'KEGGrank_CTRL.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+
+
+BOCU.sig$KEGGPathways<-as.factor(BOCU.sig$"KEGG Pathways")  
+BOCU.count<- BOCU.sig%>% 
+  select(FeatureID, KEGGPathways, Comment) %>% 
+  separate_rows(KEGGPathways, sep = ';') %>% 
+  group_by(KEGGPathways, Comment ) %>% 
+  count(KEGGPathways) %>%
+   drop_na(KEGGPathways)%>% filter(Comment != "Only present in control")
+  
+class.plot<- ggplot(BOCU.count)+
+geom_bar(aes(y=KEGGPathways, x=n,fill= Comment), stat="identity", alpha=0.7)+
+  #scale_fill_manual(values = c("lightskyblue","firebrick2"))+
+  theme_classic()+xlab("Number of Factors")+ylab("KEGG Pathways")+
+  labs(title="Up and down regulated KEGG pathways of Isolate 1154")
+class.plot
+
+figure_file <- file.path(figures_dir, 'KEGGrank_BOCU.png')
+ggsave(figure_file, class.plot, width=15, height=10, unit='cm')
+```
+## 4.4 GFE plots of dysregulated features
+
+**Dysregulated features at BOCU**
+
+```{r}
+
+my_colors = c('Not present in control' = '#d8365e', 
+              'Upregulated' = '#d34849',
+              'Downregulated' = '#005193',
+              'Only present in control' = '#4b70de')
+
+BOCU_GFE_box <- plot_boxplot(BOCU.sig, Comment, GFE, Comment, my_colors)
+BOCU_GFE_box
+
+figure_file <- file.path(figures_dir, 'DE_GFE_BOCU.png')
+ggsave(figure_file, BOCU_GFE_box,width=30, height=30, unit='cm')
+```
+
+**Dysregulated features at CTRL**
+
+```{r}
+CTRL_GFE_box <- plot_boxplot(ERLE.sig, Comment, GFE, Comment, my_colors)
+CTRL_GFE_box
+
+figure_file <- file.path(figures_dir, 'DE_GFE_CTRL.png')
+ggsave(figure_file, CTRL_GFE_box ,width=30, height=30, unit='cm')
+```
+
+**Dysregulated features at ERIN**
+
+```{r}
+ERIN_GFE_box <- plot_boxplot(ERIN.sig, Comment, GFE, Comment, my_colors)
+ERIN_GFE_box
+
+figure_file <- file.path(figures_dir, 'DE_GFE_ERIN.png')
+ggsave(figure_file, ERIN_GFE_box,width=30, height=30, unit='cm')
+```
+
+
+# 5. Hierarchical clustering analysis using heatmaps
+
+Multiple heatmaps will be plotted, based on the differential expression and if the compounds were or not assigned and structure
+
+### Normalized Area under the curve (AUC) heatmap for all detected features
+
+```{r warning=FALSE}
+
+# Initialize graphical device
+#dev.off()
+
+# Set sampleID as row.names to annotate heatmap
+
+col_annot <- column_to_rownames(metadata, var = 'SampleID') 
+mapcolor <- colorRampPalette(brewer.pal(11, 'RdYlBu'))(100)[100:1]
+
+figure_file <- file.path(figures_dir, 'All_features_heatmap.pdf')
+
+annot_colors <- list(
+  Time = c(CTRL ='#0073C2FF', BOCU = '#EFC000FF', CTRL = '#868686FF', ERIN = '#CD534CFF'),
+  Material = c(Litter = 'green4', Litter_Peat = 'chocolate4'),
+  Origin = c(LC_MS2 = '#0086cb', NMR = '#d23936'))
+
+pdf(figure_file)
+pheatmap(norm.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         show_rownames = FALSE,
+         cutree_cols = 5,
+         main = 'All features (scaled AUC)'
+)
+dev.off()
+```
+
+[Scaled Area under the curve (AUC) heatmap for all detected features](`r toString(figure_file)`)
+
+### Normalized Area under the curve (AUC) heatmap for only features that were identified
+
+```{r}
+# Extract all features that have names
+named_compounds <- compounds_table %>% 
+  select(FeatureID, Name, name4plot) %>% 
+  filter(!is.na(Name)) %>% 
+  distinct()
+
+# Create a matrix of only identified features
+
+named_compounds.matrix <- norm.matrix[rownames(norm.matrix) %in% named_compounds$FeatureID,]
+row.names(named_compounds.matrix) <- compounds_table$name4plot[match(row.names(named_compounds.matrix), compounds_table$FeatureID)]
+
+```
+
+```{r warning=FALSE}
+
+figure_file <- file.path(figures_dir, 'All_identified_features_heatmap.pdf')
+dev.off()
+pdf(figure_file, width = 15, height = 10)
+pheatmap(named_compounds.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         cutree_cols = 4,
+         cutree_rows = 5,
+         fontsize_row = 6,
+         main = 'Identified features (scaled AUC)'
+)
+dev.off()
+```
+
+[Scaled Area under the curve (AUC) heatmap for only features that were identified](`r toString(figure_file)`)
+
+### All dysregulated features
+
+```{r}
+# Create an AUC matrix that contains only features that are differentially expressed
+
+sig_features.matrix <- norm.matrix[row.names(norm.matrix) %in% sig_features, ]
+
+row.names(sig_features.matrix) <- compounds_table$name4plot[match(row.names(sig_features.matrix), compounds_table$FeatureID)]
+```
+
+```{r }
+figure_file <- file.path(figures_dir, 'Dysreg_features_heatmap.pdf')
+
+dev.off()
+pdf(figure_file, width = 10, height = 10)
+pheatmap(sig_features.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         cutree_cols = 4,
+         fontsize_row = 6,
+         main = 'Dysregulated features (scaled AUC)'
+)
+dev.off()
+```
+
+[Scaled Area under the curve (AUC) heatmap for all dysregulated features](`r toString(figure_file)`)
+
+### Dysregulated features that were identified
+
+```{r }
+named_sig_features.matrix <- sig_features.matrix[rownames(sig_features.matrix) %in% named_compounds$Name, ]
+
+figure_file <- file.path(figures_dir, 'Dysreg_identified_features.pdf')
+
+dev.off()
+pdf(figure_file, width = 10)
+pheatmap(named_sig_features.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         cutree_cols = 4,
+         fontsize_row = 8,
+         main = 'Identified dysregulated features (scaled AUC)'
+)
+dev.off()
+```
+
+[Scaled Area under the curve (AUC) heatmap for identified dysregulated features](`r toString(figure_file)`)
+
+# 6. Hierarchical clustering analysis with added NMR data
+
+## 6.1 Differential analysis of NMR data
+
+```{r}
+
+# Create a matrix with NMR data
+nmr.matrix <- nmr_table %>% 
+  column_to_rownames(var = 'Name') %>% 
+  select(metadata$SampleID)
+
+# The following function will calculate ratio, log2FC, p values and adjusted pvalues. If no replicates are available for EACH treatment
+# please use the get_diff_table_no_pval() function
+
+BOCU_to_CTRL.nmr <- get_diff_table(nmr.matrix, control.sample_list = CTRL.samples, treatment.sample_list = BOCU.samples)
+ERLE_to_CTRL.nmr <- get_diff_table(nmr.matrix, control.sample_list = CTRL.samples, treatment.sample_list = CTRL.samples)
+ERIN_to_CTRL.nmr <- get_diff_table(nmr.matrix, control.sample_list = CTRL.samples, treatment.sample_list = ERIN.samples)
+
+```
+
+
+```{r}
+# Join differential NMR data with NMR table
+BOCU_to_CTRL.nmr <- nmr_table %>%
+  select(Name, `KEGG Compound ID`, Formula, Weight, InChI) %>% 
+  right_join(BOCU_to_CTRL.nmr, by = c('Name' = 'FeatureID')) %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+BOCU_to_CTRL.nmr$Comment <- factor(BOCU_to_CTRL.nmr$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_NMR_BOCU.csv')
+write_csv(BOCU_to_CTRL.nmr, table_file )
+
+ERLE_to_CTRL.nmr <- nmr_table %>%
+  select(Name, `KEGG Compound ID`, Formula, Weight, InChI) %>% 
+  right_join(ERLE_to_CTRL.nmr, by = c('Name' = 'FeatureID')) %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+ERLE_to_CTRL.nmr$Comment <- factor(ERLE_to_CTRL.nmr$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_NMR_CTRL.csv')
+write_csv(ERLE_to_CTRL.nmr, table_file )
+
+ERIN_to_CTRL.nmr <- nmr_table %>%
+  select(Name, `KEGG Compound ID`, Formula, Weight, InChI) %>% 
+  right_join(ERIN_to_CTRL.nmr, by = c('Name' = 'FeatureID')) %>% 
+  filter(!is.nan(log2FC)) %>% 
+  mutate(Comment = case_when(log2FC == Inf ~ 'Not present in control',
+                             log2FC == -Inf ~ 'Only present in control',
+                             log2FC < 0 ~ 'Downregulated',
+                             log2FC > 0 ~ 'Upregulated'))
+
+ERIN_to_CTRL.nmr$Comment <- factor(ERIN_to_CTRL.nmr$Comment, 
+                               levels = c('Only present in control', 'Downregulated', 'Upregulated', 'Not present in control' ))
+
+table_file <- file.path(tables_dir, 'Diff_expressed_NMR_ERIN.csv')
+write_csv(ERIN_to_CTRL.nmr, table_file )
+```
+
+## 6.2 Heatmaps including NMR data
+
+```{r}
+# Join NMR data with dysregulated LC data
+sig_nmr.matrix <- rbind(sig_features.matrix, nmr.matrix)
+```
+
+```{r}
+
+row_annot <- tibble(Name = row.names(sig_nmr.matrix)) %>% 
+  mutate(Origin = ifelse(Name %in% row.names(nmr.matrix), 'NMR', 'LC_MS2')) %>% 
+  column_to_rownames(var = 'Name')
+
+figure_file <- file.path(figures_dir, 'Dysreg_features_and_NMR.pdf')
+dev.off()
+pdf(figure_file, width = 15, height = 15)
+pheatmap(sig_nmr.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_row = row_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         cutree_cols = 4,
+         cutree_rows = 5,
+         fontsize_row = 6,
+         main = 'Dysregulated features and NMR data'
+)
+dev.off()
+```
+
+[Dysregulated features and NMR data](`r toString(figure_file)`)
+
+```{r}
+# Join NMR data with dysregulated LC data
+named_sig_nmr.matrix <- rbind(named_sig_features.matrix, nmr.matrix)
+```
+
+```{r}
+figure_file <- file.path(figures_dir, 'Dysreg_identified_features_and_NMR.pdf')
+dev.off()
+pdf(figure_file, width = 15, height = 10)
+pheatmap(named_sig_nmr.matrix,
+         clustering_distance_rows = 'correlation',
+         clustering_distance_cols = 'correlation',
+         scale = 'row',
+         annotation_col = col_annot,
+         annotation_row = row_annot,
+         annotation_colors = annot_colors,
+         color = mapcolor,
+         cutree_cols = 4,
+         cutree_rows = 5,
+         fontsize_row = 6,
+         main = 'Identified dysregulated features and NMR data'
+)
+dev.off()
+```
+
+[Identified dysregulated features and NMR data](`r toString(figure_file)`)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+

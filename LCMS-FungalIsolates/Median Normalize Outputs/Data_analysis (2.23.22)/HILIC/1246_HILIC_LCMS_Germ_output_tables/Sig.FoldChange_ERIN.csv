@@ -1,0 +1,3 @@
+FeatureID,name4plot,Formula,MW,Comment,log2FC,pval
+Feature0509,N-Acetylneuraminic acid,C11 H19 N O9,309.10612,Downregulated,-2.876738535574256,0.014497855935748337
+Feature0373,Feature0373,C12 H10 N2 O7 S,326.02086,Downregulated,-2.192956495622185,0.04766123575817566

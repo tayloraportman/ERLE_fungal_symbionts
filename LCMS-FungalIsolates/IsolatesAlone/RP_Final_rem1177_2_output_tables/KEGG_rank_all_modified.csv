@@ -1,0 +1,72 @@
+KEGGPathways,Comment,n,isolate
+2-Oxocarboxylic acid metabolism,Upregulated,3,1154
+2-Oxocarboxylic acid metabolism,Upregulated,2,1177
+2-Oxocarboxylic acid metabolism,Downregulated,-3,1246
+2-Oxocarboxylic acid metabolism,Upregulated,2,1246
+ABC transporters,Downregulated,-3,1154
+ABC transporters,Upregulated,9,1154
+ABC transporters,Upregulated,5,1177
+ABC transporters,Downregulated,-2,1246
+ABC transporters,Upregulated,3,1246
+Aminoacyl-tRNA biosynthesis,Upregulated,2,1154
+Aminoacyl-tRNA biosynthesis,Upregulated,1,1177
+Aminoacyl-tRNA biosynthesis,Downregulated,-5,1246
+Aminoacyl-tRNA biosynthesis,Upregulated,1,1246
+Biosynthesis of amino acids,Upregulated,7,1154
+Biosynthesis of amino acids,Downregulated,-2,1177
+Biosynthesis of amino acids,Upregulated,4,1177
+Biosynthesis of amino acids,Downregulated,-3,1246
+Biosynthesis of amino acids,Upregulated,3,1246
+Biosynthesis of cofactors,Upregulated,6,1154
+Biosynthesis of cofactors,Upregulated,3,1177
+Biosynthesis of cofactors,Downregulated,-3,1246
+Biosynthesis of cofactors,Upregulated,1,1246
+Biosynthesis of phenylpropanoids,Upregulated,3,1154
+Biosynthesis of phenylpropanoids,Upregulated,1,1177
+Biosynthesis of phenylpropanoids,Upregulated,1,1246
+Biosynthesis of plant secondary metabolites,Upregulated,4,1154
+Biosynthesis of plant secondary metabolites,Upregulated,1,1177
+Biosynthesis of plant secondary metabolites,Downregulated,-1,1246
+Biosynthesis of plant secondary metabolites,Upregulated,1,1246
+Biosynthesis of secondary metabolites,Downregulated,-1,1154
+Biosynthesis of secondary metabolites,Upregulated,13,1154
+Biosynthesis of secondary metabolites,Downregulated,-5,1177
+Biosynthesis of secondary metabolites,Upregulated,6,1177
+Biosynthesis of secondary metabolites,Downregulated,-4,1246
+Biosynthesis of secondary metabolites,Upregulated,15,1246
+Biosynthesis of plant secondary metabolites,Upregulated,1,1154
+Biosynthesis of plant secondary metabolites,Upregulated,2,1246
+Cyanoamino acid metabolism,Downregulated,-9,1154
+Cyanoamino acid metabolism,Downregulated,-4,1246
+Cyanoamino acid metabolism,Upregulated,1,1246
+D-Amino acid metabolism,Upregulated,2,1154
+D-Amino acid metabolism,Upregulated,1,1177
+D-Amino acid metabolism,Downregulated,-1,1246
+D-Amino acid metabolism,Upregulated,2,1246
+Degradation of aromatic compounds,Upregulated,6,1154
+Degradation of aromatic compounds,Upregulated,4,1177
+Degradation of aromatic compounds,Upregulated,1,1246
+Microbial metabolism in diverse environments,Downregulated,-7,1154
+Microbial metabolism in diverse environments,Upregulated,13,1154
+Microbial metabolism in diverse environments,Downregulated,-1,1177
+Microbial metabolism in diverse environments,Upregulated,5,1177
+Microbial metabolism in diverse environments,Downregulated,-4,1246
+Microbial metabolism in diverse environments,Upregulated,11,1246
+Other,Downregulated,-6,1154
+Other,Upregulated,29,1154
+Other,Downregulated,-4,1177
+Other,Upregulated,14,1177
+Other,Downregulated,-1,1246
+Other,Upregulated,19,1246
+"Phenylalanine, tyrosine and tryptophan biosynthesis",Upregulated,1,1154
+"Phenylalanine, tyrosine and tryptophan biosynthesis",Downregulated,-8,1246
+"Phenylalanine, tyrosine and tryptophan biosynthesis",Upregulated,1,1246
+Phenylpropanoid biosynthesis,Upregulated,4,1154
+Phenylpropanoid biosynthesis,Upregulated,1,1177
+Phenylpropanoid biosynthesis,Upregulated,7,1246
+Protein digestion and absorption,Upregulated,2,1154
+Protein digestion and absorption,Upregulated,1,1177
+Protein digestion and absorption,Downregulated,-15,1246
+Protein digestion and absorption,Upregulated,1,1246
+"Tropane, piperidine and pyridine alkaloid biosynthesis",Downregulated,-3,1154
+"Tropane, piperidine and pyridine alkaloid biosynthesis",Downregulated,-2,1246

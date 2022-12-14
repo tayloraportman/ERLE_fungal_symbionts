@@ -1,0 +1,18 @@
+FeatureID,name4plot,KEGG Pathways,Formula,MW,Comment,log2FC,pval
+Feature1587,8-{3-Oxo-2-[(2E)-2-penten-1-yl]-1-cyclopenten-1-yl}octanoic acid-peak2,Metabolic pathways,C18 H28 O3,292.20378,Downregulated,-3.296366516697358,0.02139747553430055
+Feature1587,8-{3-Oxo-2-[(2E)-2-penten-1-yl]-1-cyclopenten-1-yl}octanoic acid-peak2,Biosynthesis of secondary metabolites,C18 H28 O3,292.20378,Downregulated,-3.296366516697358,0.02139747553430055
+Feature1587,8-{3-Oxo-2-[(2E)-2-penten-1-yl]-1-cyclopenten-1-yl}octanoic acid-peak2,Other,C18 H28 O3,292.20378,Downregulated,-3.296366516697358,0.02139747553430055
+Feature1320,"5-hydroxy-4-methoxy-5,6-dihydro-2H-pyran-2-one-peak2",Microbial metabolism in diverse environments,C6 H8 O4,144.04227,Downregulated,-2.2189894217738675,0.0010987295729334337
+Feature1320,"5-hydroxy-4-methoxy-5,6-dihydro-2H-pyran-2-one-peak2",Other,C6 H8 O4,144.04227,Downregulated,-2.2189894217738675,0.0010987295729334337
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Metabolic pathways,C6 H8 O3,128.04731,Downregulated,-2.584741245960299,0.0011966854606287939
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Microbial metabolism in diverse environments,C6 H8 O3,128.04731,Downregulated,-2.584741245960299,0.0011966854606287939
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Degradation of aromatic compounds,C6 H8 O3,128.04731,Downregulated,-2.584741245960299,0.0011966854606287939
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Aminobenzoate degradation,C6 H8 O3,128.04731,Downregulated,-2.584741245960299,0.0011966854606287939
+Feature1028,5-Ethyl-4-hydroxy-3(2H)-furanone-peak1,Other,C6 H8 O3,128.04731,Downregulated,-2.584741245960299,0.0011966854606287939
+Feature0860,1-Naphthol,Other,C10 H8 O,144.05749,Upregulated,5.288879551363776,0.01474632768186407
+Feature0797,6-Methoxyquinoline,Metabolic pathways,C10 H9 N O,159.06843,Upregulated,4.058078208858489,0.026750840919302826
+Feature0797,6-Methoxyquinoline,Biosynthesis of secondary metabolites,C10 H9 N O,159.06843,Upregulated,4.058078208858489,0.026750840919302826
+Feature0797,6-Methoxyquinoline,Biosynthesis of various antibiotics,C10 H9 N O,159.06843,Upregulated,4.058078208858489,0.026750840919302826
+Feature0797,6-Methoxyquinoline,Other,C10 H9 N O,159.06843,Upregulated,4.058078208858489,0.026750840919302826
+Feature0661,Phenyl D-glucopyranosiduronic acid-peak2,NA,C12 H14 O7,270.07397,Downregulated,-2.0209450034110326,3.561891018374464e-4
+Feature0004,"3,4-Dihydroxy-7-methoxy-2,2,6-trimethyl-2,3,4,6-tetrahydro-5H-pyrano[3,2-c]quinolin-5-one",NA,C16 H19 N O5,305.12642,Downregulated,-4.098923293056315,3.45812373306019e-5

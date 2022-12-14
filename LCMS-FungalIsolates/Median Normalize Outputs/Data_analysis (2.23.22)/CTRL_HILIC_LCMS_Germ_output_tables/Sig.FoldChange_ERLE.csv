@@ -1,0 +1,32 @@
+FeatureID,name4plot,KEGG Pathways,Formula,MW,Comment,log2FC,pval
+Feature0518,Homogentisic acid-peak2,Metabolic pathways,C8 H8 O4,168.04221,Downregulated,-2.581824452326076,4.195612842080515e-4
+Feature0518,Homogentisic acid-peak2,Biosynthesis of secondary metabolites,C8 H8 O4,168.04221,Downregulated,-2.581824452326076,4.195612842080515e-4
+Feature0518,Homogentisic acid-peak2,Microbial metabolism in diverse environments,C8 H8 O4,168.04221,Downregulated,-2.581824452326076,4.195612842080515e-4
+Feature0518,Homogentisic acid-peak2,Biosynthesis of cofactors,C8 H8 O4,168.04221,Downregulated,-2.581824452326076,4.195612842080515e-4
+Feature0518,Homogentisic acid-peak2,Degradation of aromatic compounds,C8 H8 O4,168.04221,Downregulated,-2.581824452326076,4.195612842080515e-4
+Feature0518,Homogentisic acid-peak2,Other,C8 H8 O4,168.04221,Downregulated,-2.581824452326076,4.195612842080515e-4
+Feature0396,"6-(1-Hydroxyethyl)-3-(hydroxymethyl)-2,7-dioxabicyclo[4.1.0]hept-3-en-5-one-peak2",NA,C8 H10 O5,186.05281,Downregulated,-2.568589202561552,6.669576588896155e-4
+Feature0359,3-formylsalicylic acid,Metabolic pathways,C8 H6 O4,166.02653,Downregulated,-2.021265585808399,0.00840940327275826
+Feature0359,3-formylsalicylic acid,Biosynthesis of secondary metabolites,C8 H6 O4,166.02653,Downregulated,-2.021265585808399,0.00840940327275826
+Feature0359,3-formylsalicylic acid,Microbial metabolism in diverse environments,C8 H6 O4,166.02653,Downregulated,-2.021265585808399,0.00840940327275826
+Feature0359,3-formylsalicylic acid,ABC transporters,C8 H6 O4,166.02653,Downregulated,-2.021265585808399,0.00840940327275826
+Feature0359,3-formylsalicylic acid,Degradation of aromatic compounds,C8 H6 O4,166.02653,Downregulated,-2.021265585808399,0.00840940327275826
+Feature0359,3-formylsalicylic acid,Other,C8 H6 O4,166.02653,Downregulated,-2.021265585808399,0.00840940327275826
+Feature0318,"2,4,6-Trihydroxyacetophenone-peak2",Metabolic pathways,C8 H8 O4,168.0422,Downregulated,-3.10445824571243,0.002300204328186908
+Feature0318,"2,4,6-Trihydroxyacetophenone-peak2",Biosynthesis of secondary metabolites,C8 H8 O4,168.0422,Downregulated,-3.10445824571243,0.002300204328186908
+Feature0318,"2,4,6-Trihydroxyacetophenone-peak2",Microbial metabolism in diverse environments,C8 H8 O4,168.0422,Downregulated,-3.10445824571243,0.002300204328186908
+Feature0318,"2,4,6-Trihydroxyacetophenone-peak2",Biosynthesis of cofactors,C8 H8 O4,168.0422,Downregulated,-3.10445824571243,0.002300204328186908
+Feature0318,"2,4,6-Trihydroxyacetophenone-peak2",Degradation of aromatic compounds,C8 H8 O4,168.0422,Downregulated,-3.10445824571243,0.002300204328186908
+Feature0318,"2,4,6-Trihydroxyacetophenone-peak2",Other,C8 H8 O4,168.0422,Downregulated,-3.10445824571243,0.002300204328186908
+Feature0252,Guanine,Metabolic pathways,C5 H5 N5 O,151.04944,Upregulated,2.0155678905610843,0.030158937184579737
+Feature0252,Guanine,Other,C5 H5 N5 O,151.04944,Upregulated,2.0155678905610843,0.030158937184579737
+Feature0030,Caffeic acid-peak1,Metabolic pathways,C9 H8 O4,180.04224,Downregulated,-2.0780965120708896,0.0011011272497538256
+Feature0030,Caffeic acid-peak1,Biosynthesis of secondary metabolites,C9 H8 O4,180.04224,Downregulated,-2.0780965120708896,0.0011011272497538256
+Feature0030,Caffeic acid-peak1,Microbial metabolism in diverse environments,C9 H8 O4,180.04224,Downregulated,-2.0780965120708896,0.0011011272497538256
+Feature0030,Caffeic acid-peak1,Biosynthesis of cofactors,C9 H8 O4,180.04224,Downregulated,-2.0780965120708896,0.0011011272497538256
+Feature0030,Caffeic acid-peak1,Biosynthesis of plant secondary metabolites,C9 H8 O4,180.04224,Downregulated,-2.0780965120708896,0.0011011272497538256
+Feature0030,Caffeic acid-peak1,Degradation of aromatic compounds,C9 H8 O4,180.04224,Downregulated,-2.0780965120708896,0.0011011272497538256
+Feature0030,Caffeic acid-peak1,Biosynthesis of amino acids,C9 H8 O4,180.04224,Downregulated,-2.0780965120708896,0.0011011272497538256
+Feature0030,Caffeic acid-peak1,Biosynthesis of phenylpropanoids,C9 H8 O4,180.04224,Downregulated,-2.0780965120708896,0.0011011272497538256
+Feature0030,Caffeic acid-peak1,2-Oxocarboxylic acid metabolism,C9 H8 O4,180.04224,Downregulated,-2.0780965120708896,0.0011011272497538256
+Feature0030,Caffeic acid-peak1,Other,C9 H8 O4,180.04224,Downregulated,-2.0780965120708896,0.0011011272497538256

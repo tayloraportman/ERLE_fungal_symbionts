@@ -1,0 +1,242 @@
+---
+title: "Compound Discover Data Cleaning "
+output: html_notebook
+---
+---
+title: "CompoundDiscover data clean+combine All Isolates+ seeds"
+output: html_notebook
+---
+
+# 1. Importing Libraries
+
+```{r libraries, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(readxl)
+library(ggpubr)
+library(ggsci)
+library(ggpolypath)
+library(venn)
+library(dplyr)
+source('functions_cdis_exploration.R')
+```
+
+
+Change based on what data you are using
+```{r}
+data= 'RP'
+```
+
+# 2. Create directory
+
+Import data from compound discover.
+
+```{r set_path, message=FALSE}
+#set path variables
+project_dir <- setwd("/Volumes/GoogleDrive/My Drive/projects/ERLE_fungal_symbionts/IsolatesAll")
+
+# Give a name for your project so the results are all grouped together in a directory with the same name
+project_name <- 'RP_All_checked'
+figures_dir <- file.path(project_dir, paste0(project_name, '_output_figures'))
+tables_dir <- file.path(project_dir,  paste0(project_name, '_output_tables'))
+
+# Create output directories
+dir.create(figures_dir, showWarnings = FALSE)
+
+dir.create(tables_dir, showWarnings = FALSE)
+```
+
+## 3. Import Data
+
+```{r import_data, message=FALSE}
+# Import data tables
+cd_results_file <- file.path(project_dir, 'Data', 'CompoundsChecked_Again.csv')
+cd_results_table <- read_csv(cd_results_file)
+
+cd_results_table$DeltaMass<- as.numeric(cd_results_table$"Annot. DeltaMass [ppm]")
+cd_results_table$MW<- as.numeric(cd_results_table$"Calc. MW")
+
+# Select columns needed for downstream analysis
+#Cleaned for Delta mass ppm ..5--.5 and duplicate molecular weights
+
+#drop.cols<- c(' Area: 23')
+#cd_results_table<-dplyr::select(cd_results_table, !drop.cols)
+cd_results_table <- cd_results_table %>% filter(Checked!="FALSE")
+  
+  
+ # summarize_at(vars(matches("Group Area: ")), mean,.drop=FALSE)%>%
+  
+cd_results_table<- cd_results_table%>%
+  mutate(FeatureID = paste0('Feature',formatC(n():0001, width = 4, flag = '0'))) %>%
+ dplyr:: select(FeatureID, Name, Formula, MW, contains('AnnotSource:'), contains('Results'), contains('Pathways'), 
+         contains('Group Area:'), contains('Gap Status:')) %>% 
+   
+  
+  # Differentiate between features that share the same name using "peak#" at the end of the name
+  group_by(Name) %>%
+  add_count(Name) %>% 
+  
+  # Create variable with names for plotting (useful in following scripts)
+  mutate(name4plot = ifelse(is.na(Name), FeatureID, ifelse(n == 1, Name, paste0(Name, '-peak', n():1)))) %>% 
+ dplyr:: select(!n) %>% 
+  ungroup()
+
+```
+
+
+## 4. Import and combine metadata
+```{r}
+
+# Import metadata and fix names
+metadata_file <- file.path(project_dir, 'data', 'metadata.csv')
+metadata <- read_csv(metadata_file)
+
+#metadata$`Sample Identifier` <- str_remove(metadata$`Sample Identifier`, 'Saleska_')
+#metadata$`Sample Identifier` <- str_remove(metadata$`Sample Identifier`, '_23.*')
+
+# Select only the useful columns and fix column names
+
+metadata <- metadata %>% 
+  dplyr::select(SampleID, Plant, Fungi) 
+  #rename(metadata,SampleID = `Sample Identifier`)
+
+table_file <- file.path(tables_dir, 'fixed_metadata.csv')
+write_csv(metadata, table_file)
+
+
+```
+# 5. Data Manipulation and thermodynamic indices calculations
+
+```{r data, message=FALSE, warning=FALSE}
+
+# Split formula column into elemental counts
+cd_results_table <- separate_formula(cd_results_table)
+
+# Calculate ratios and thermodynamic indices
+cd_results_table <- calc_ratios_n_idxs(cd_results_table)
+
+# Calculate classes
+cd_results_table <- calc_classes(cd_results_table)
+
+table_file <- file.path(tables_dir, 'RPcompounds.table.csv')
+write_csv(cd_results_table, table_file)
+
+# Gather area under the curve (AUC) values per sample
+
+compounds_table <- cd_results_table %>% 
+  select(-contains('Gap Status:')) %>% 
+  
+  gather(contains('Area:'), key = 'SampleID', value = 'AUC') %>% 
+  filter(AUC > 0)
+compounds_table$SampleID <- str_remove(compounds_table$SampleID, 'Group Area: ')
+
+compounds_table$Class <- gsub( "Lignin", "Phenol", compounds_table$Class)
+compounds_table$Class <- gsub("Tannin","Other",  compounds_table$Class)
+
+
+# Save gap-filled table to be used in Statistical Analysis
+
+table_file <- file.path(tables_dir, 'gap_filled_compounds_table.csv')
+write_csv(compounds_table, table_file)
+
+```
+### Gap filtering (only for unlabel data)
+
+```{r}
+# Gather "Gap Status" for filtering 
+
+  gap_status <- cd_results_table %>% 
+    select(FeatureID, contains('Gap Status:')) %>% 
+    gather(contains('Gap Status:'), key = 'SampleID', value = 'gap_status')
+  gap_status$SampleID <- str_remove(gap_status$SampleID, 'Gap Status: ')
+  
+  ## Filtering
+  
+  compounds_table <- left_join(compounds_table, gap_status, by = c('FeatureID', 'SampleID')) 
+  
+
+
+```
+
+``` {r}
+# Add metadata information
+compounds_table$SampleID<- as.factor(compounds_table$SampleID)
+metadata$SampleID<- as.factor(metadata$SampleID)
+compounds_table <-  left_join(compounds_table, metadata, by = 'SampleID')
+
+table_file <- file.path(tables_dir, 'compounds_table.csv')
+write_csv(compounds_table, table_file)
+
+```
+
+
+Doesn't work because using already gap filled data: would need gaps
+```{r venn_time, message=FALSE}
+compounds_table_nogap<- compounds_table %>%
+filter(gap_status !="Full gap")
+
+# Venn diagram of the compounds present in each isolate
+CTRL_list <- compounds_table_nogap %>% 
+  filter(Fungi == 'CTRL') %>% 
+  select(FeatureID) %>% 
+  distinct()
+
+F1177_list <- compounds_table_nogap %>% 
+  filter(Fungi == '1177') %>% 
+  select(FeatureID) %>% 
+  distinct()
+
+F1246_list <- compounds_table_nogap %>% 
+  filter(Fungi == '1246') %>% 
+  select(FeatureID) %>% 
+  distinct()
+
+F1154_list <- compounds_table_nogap %>% 
+  filter(Fungi == '1154') %>% 
+  select(FeatureID) %>% 
+  distinct()
+
+my_list <- list(CTRL = CTRL_list$FeatureID,
+                F1177 = F1177_list$FeatureID,
+                F1246 = F1246_list$FeatureID,
+                F1154 = F1154_list$FeatureID)
+
+my_colors <- c('grey', 'blue', 'green', 'pink')
+
+figure_file <- file.path(figures_dir, 'venn_isolates.png')
+png(figure_file)
+venn_time <- plot_venn(my_list, my_colors)
+dev.off()
+
+venn_time <- plot_venn(my_list, my_colors)
+```
+``` {r}
+# Add metadata information
+compounds_table_nogap$SampleID<- as.factor(compounds_table_nogap$SampleID)
+metadata$SampleID<- as.factor(metadata$SampleID)
+compounds_table <-  left_join(compounds_table_nogap, metadata, by = 'SampleID')
+
+table_file <- file.path(tables_dir, 'compounds_table_nogap.csv')
+write_csv(compounds_table, table_file)
+
+```
+
+
+# 6. Van Krevelin
+```{r vank_material, message=FALSE}
+
+# Ven Krevelen Diagram based on type of organic material
+vank_material <- plot_vank(compounds_table, Class)
+vank_material
+
+figure_file <- file.path(figures_dir, 'Venk_diagram_all.jpg')
+ggsave(figure_file, vank_material, width=30, height=20, unit= 'cm')
+
+```
+
+```{r}
+##Number of unique compounds (some Names/ compounds are replicated)
+distinct<- distinct(cd_results_table, Name, .keep_all=TRUE)
+#unique<- unique(cd_results_table$Name)
+
+##414Unique compounds
+```
