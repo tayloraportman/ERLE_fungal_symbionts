@@ -1,4 +1,0 @@
-FeatureID,name4plot,Formula,MW,Comment,log2FC,pval
-Feature0509,N-Acetylneuraminic acid,C11 H19 N O9,309.10612,Downregulated,-2.7187072545380833,0.015316798524391863
-Feature0373,Feature0373,C12 H10 N2 O7 S,326.02086,Downregulated,-2.5506112283648323,0.045067086827465366
-Feature0271,L-gamma-Glutamyl-L-leucine-peak1,C11 H20 N2 O5,260.13725,Downregulated,-4.231349503002955,0.00597245405954515

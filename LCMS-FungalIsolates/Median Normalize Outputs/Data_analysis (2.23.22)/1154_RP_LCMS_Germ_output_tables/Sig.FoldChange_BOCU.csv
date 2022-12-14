@@ -1,3 +1,0 @@
-FeatureID,name4plot,KEGG Pathways,Formula,MW,Comment,log2FC,pval
-Feature0698,"(2Z,4E)-2,4-Hexadienedial-peak1",Metabolic pathways;Microbial metabolism in diverse environments;Degradation of aromatic compounds;Tyrosine metabolism;Aminobenzoate degradation;Other,C6 H6 O2,110.03674,Upregulated,2.2670214072983423,0.00991847570985236
-Feature0404,pro-gln,NA,C10 H17 N3 O4,243.1219,Downregulated,-2.3927202404406254,0.03815217127678965

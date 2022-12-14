@@ -1,1 +1,0 @@
-FeatureID,Name,Formula,MW,KEGG Pathways,Metabolika Pathways,name4plot,C,H,N,O,P,S,F,Cl,H_to_C,O_to_C,NOSC,GFE,DBE,DBE_O,AI,AI_mod,DBE_AI,Class,control_means,treatment_means,ratio,log2FC,pval,pval.adj,Comment,KEGGPathways

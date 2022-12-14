@@ -1,6 +1,0 @@
-FeatureID,name4plot,KEGG Pathways,Formula,MW,Comment,log2FC,pval
-Feature0509,N-Acetylneuraminic acid,Metabolic pathways;Other,C11 H19 N O9,309.10612,Downregulated,-2.4411657142388377,0.001125845875421768
-Feature0476,L-(-)-Malic acid-peak3,Metabolic pathways;Biosynthesis of secondary metabolites;Microbial metabolism in diverse environments;Biosynthesis of plant secondary metabolites;Carbon metabolism;Biosynthesis of phenylpropanoids;Biosynthesis of plant hormones;Ascorbate and aldarate metabolism;Biosynthesis of terpenoids and steroids;Glucagon signaling pathway;Central carbon metabolism in cancer;Other,C4 H6 O5,134.02159,Downregulated,-2.02380411962468,0.0010371473670133938
-Feature0257,Adenosine 5'-monophosphate,Metabolic pathways;Biosynthesis of secondary metabolites;Biosynthesis of cofactors;Biosynthesis of plant secondary metabolites;Biosynthesis of plant hormones;Other,C10 H14 N5 O7 P,347.06322,Downregulated,-2.1139218977654415,0.002826087253131918
-Feature0236,MFCD00025555,NA,C9 H18 N2 O3,202.13173,Downregulated,-2.799386765114215,2.905404696908949e-4
-Feature0081,Dichloroacetic acid,Microbial metabolism in diverse environments;Other,C2 H2 Cl2 O2,127.94324,Upregulated,2.0970503273802112,0.03340749366288076
