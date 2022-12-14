@@ -1,0 +1,278 @@
+﻿FeatureID,Name,Class,BiogeochemicalClass,FIShScore,1246,1154,1177
+Feature0026,(+)-Piperitol,Phenol,Carbohydrates,,0.446191099,0,0
+Feature0029,"(2S)-3-Hydroxy-2-({[(3S,4S,5R)-2,3,4-trihydroxy-5-(hydroxymethyl)tetrahydro-2-furanyl]methyl}amino)butanoic acid (non-preferred name)",Carbohydrate,Nitrated lipids,,-0.055127705,0,0
+Feature0030,"(2S)-3-Phenyl-2-({[(3S,4S,5R)-2,3,4-trihydroxy-5-(hydroxymethyl)tetrahydro-2-furanyl]methyl}amino)propanoic acid (non-preferred name)",Phenol,Nitrated lipids,,-0.119208894,0,0
+Feature0031,"(2Z,4Z)-6-Amino-2,4-diimino-5-nitro-1,3(2H,4H)-pyrimidinediol",Carbohydrate,Aromatic amines,,0,-0.310101034,0
+Feature0032,"(6R)-5-Acetamido-3,5-dideoxy-6-[(1R,2R)-1,2-dihydroxy-3-(lactoyloxy)propyl]-alpha-L-threo-hex-2-ulopyranosonic acid",Carbohydrate,Amino acids & derivatives,,-0.320813885,0,-0.3496371
+Feature0036,"1,2-Dideoxy-5-O-(methylsulfonyl)pentitol",Carbohydrate,Other,,0.13277139,0,0
+Feature0037,"1,4-Anhydro-1-(2,4-dioxo-1,2,3,4-tetrahydro-5-pyrimidinyl)-5-O-phosphonopentitol",Other,Other,,-0.154921457,-0.384434345,0
+Feature0038,"1-(2-Furyl)-1,2-ethanediol",Phenol,Other,,0.069774885,0.398296843,0.35682995
+Feature0039,"1-(3,4-Dimethoxyphenyl)-4-(4-hydroxy-3-methoxyphenyl)dihydro-1H,3H-furo[3,4-c]furan-3a(4H)-ol",Phenol,Cyclic amines,,0.408077323,0,0
+Feature0040,"1-(3,4-dimethoxyphenyl)ethan-1-one oxime",Phenol,Cyclic amines,,-0.123506958,0,0
+Feature0041,1-(Dimethylamino)-2-propanyl acetate,Lipid,Amino acids & derivatives,,0.506227996,0,0
+Feature0042,1-[(3-Carboxypropyl)amino]-1-deoxy-beta-D-fructofuranose,Amino Sugar,Aromatic amines,,0.075085318,0,-0.2205274
+Feature0044,1-Amino-1-deoxyhexitol,Carbohydrate,Amino acids & derivatives,,0.244623325,0,0
+Feature0046,"1-Methyl-5-(1-piperidinyl)-2,4-imidazolidinedione",Lipid,Cyclic amines,,0.064487659,0,0
+Feature0048,1728928,Protein,Nitrated lipids,,0,-0.095066987,0
+Feature0050,2'-Deoxyadenosine,Phenol,Amino acids & derivatives,,0,0,0.10158612
+Feature0051,"2,3,9-Trimethoxy-6a,12a-dihydrochromeno[3,4-b]chromen-12(6H)-one",Phenol,Carbohydrates,,0.437247726,0,-0.096404
+Feature0052,"2,4-Diacetamido-2,4,6-trideoxy-alpha-D-mannopyranose",Protein,Amino acids & derivatives,,0.108522814,0,0
+Feature0053,"2,4-Pentadienoic acid",Phenol,Carboxylic acids,,0,0.1827525,0
+Feature0055,"2-[9-(Hydroxyimino)-3,6-diazatricyclo[4.3.1.1~3,8~]undec-1-yl]ethyl acetate",Lipid,Other,,0.249103941,0.493465979,0.56071311
+Feature0056,2-Acetamido-2-deoxyhexitol,Carbohydrate,Amino acids & derivatives,,0.133200992,-0.097578213,0
+Feature0060,2-Methylhippuric Acid,Phenol,Benzoic acids,,0,0.093979217,0
+Feature0061,2-O-(beta-D-glucosyl)-sn-glycerol 3-phosphate,Carbohydrate,Other,,0.073496354,0,0
+Feature0062,2050867,Protein,Other,,0.250339789,0,0
+Feature0063,"3',4'-Dimethoxyacetophenone",Phenol,Phenols,,0,0.780743812,0
+Feature0066,"3-(1-hydroxyethyl)-2,3,6,7,8,8a-hexahydropyrrolo[1,2-a]pyrazine-1,4-dione",Protein,Cyclic amines,,0,0.064517916,0
+Feature0067,"3-(propan-2-yl)-octahydropyrrolo[1,2-a]pyrazine-1,4-dione",Lipid,Cyclic amines,,0,0.058207373,0
+Feature0069,3-Carboxytyrosine,Phenol,Benzoic acids,,0.389354562,0,-0.1988272
+Feature0070,3-hydroxy-3-methylpentanedioic acid,Carbohydrate,Carbohydrates,,0,-0.260485945,0
+Feature0071,"3-Hydroxy-4,5,6-trimethoxytetrahydro-2H-pyran-2-carboxamide",Amino Sugar,Amino acids & derivatives,,0.408091973,0.554002848,0
+Feature0073,"3-Methoxy-4-(methoxycarbonyl)-5-methylphenyl 4-[(2,4-dimethoxy-6-methylbenzoyl)oxy]-2-methoxy-6-methylbenzoate",Phenol,Carbohydrates,,0.520998782,0,0
+Feature0076,3-O-(2-Acetamido-2-deoxy-beta-D-glucopyranosyl)-D-galactitol,Carbohydrate,Nitrated lipids,,0,-0.345865801,-0.4580406
+Feature0077,3-oxovaleric acid,Amino Sugar,Carboxylic acids,,0.100324863,0.117670908,0
+Feature0079,3603307,Protein,Other,,0,0.069602812,0
+Feature0081,"4,5-Dideoxypentonic acid",Carbohydrate,Carboxylic acids,,0,0.218582404,0
+Feature0082,"4-(4-hydroxy-2-methoxy-3,5,6-trimethylbenzoyloxy)-2-methoxy-3,5,6-trimethylbenzoic acid",Phenol,Carbohydrates,,0.476656196,0,0
+Feature0083,"4-(4-hydroxy-2-methoxy-3,5,6-trimethylbenzoyloxy)-2-methoxy-3,5,6-trimethylbenzoic acid",Phenol,Carbohydrates,,0.5497492,0,0
+Feature0086,4-guanidinobutanal,Lipid,Amino acids & derivatives,,0,-0.207488209,0
+Feature0087,4-Guanidinobutyric acid,Protein,Amino acids & derivatives,,0.084639883,-0.302326993,0
+Feature0089,"4-Hydroxy-N-(2-hydroxy-8-methyl-4-oxo-7-{[(2R,3R,4R,5R)-3,4,5-trihydroxy-6,6-dimethyltetrahydro-2H-pyran-2-yl]oxy}-4H-chromen-3-yl)-3-(3-methyl-2-buten-1-yl)benzamide",Phenol,Lipids,,0.459426858,0,-0.0939656
+Feature0090,"4-methoxy-6-(prop-2-en-1-yl)-2H-1,3-benzodioxole",Phenol,Benzoic acids,,0.605165161,0,0
+Feature0091,4-Methoxycinnamaldehyde,Phenol,Phenols,,-0.121936014,0.382377674,0.19782287
+Feature0093,4-Phenylbutyric acid,Phenol,Benzoic acids,,0,0.42626256,0
+Feature0095,"5-Amino-6,6-bis(ethylsulfanyl)-1,2,3,4-hexanetetrol",Protein,Amino acids & derivatives,,0.087781276,0,0
+Feature0096,5-Aminolevulinic acid,Amino Sugar,Amino acids & derivatives,,0.396564925,0,0
+Feature0097,"5-hydroxy-4-methoxy-5,6-dihydro-2H-pyran-2-one",Other,Phenols,78.57,-0.103804845,-0.200941242,-0.2102648
+Feature0097,"5-hydroxy-4-methoxy-5,6-dihydro-2H-pyran-2-one",Other,Phenols,79.57,-0.103804845,-0.200941242,-0.2102648
+Feature0097,"5-hydroxy-4-methoxy-5,6-dihydro-2H-pyran-2-one",Other,Phenols,80.57,-0.103804845,-0.200941242,-0.2102648
+Feature0098,5-Methylhexan-3-one,Protein,Amino acids & derivatives,44.44,0.085129835,0.226826887,0
+Feature0098,5-Methylhexan-3-one,Protein,Amino acids & derivatives,45.44,0.085129835,0.226826887,0
+Feature0100,6-(alpha-D-glucosaminyl)-1D-myo-inositol,Carbohydrate,Carbohydrates,,0,-0.155881143,-0.1472803
+Feature0101,6-Aminocaproic acid,Protein,Amino acids & derivatives,39.62,0.135689334,0.291765591,0.30642428
+Feature0101,6-Aminocaproic acid,Protein,Amino acids & derivatives,40.62,0.135689334,0.291765591,0.30642428
+Feature0101,6-Aminocaproic acid,Protein,Amino acids & derivatives,41.62,0.135689334,0.291765591,0.30642428
+Feature0102,"6-chloro-2-(3-ethyl-5,5,8,8-tetramethyl-5,6,7,8-tetrahydronaphthalen-2-yl)-4-phenylquinoline",Unsaturated HC,Other,17.86,-0.059158024,0.440037075,0
+Feature0102,"6-chloro-2-(3-ethyl-5,5,8,8-tetramethyl-5,6,7,8-tetrahydronaphthalen-2-yl)-4-phenylquinoline",Unsaturated HC,Other,17.86,-0.059158024,0.440037075,0
+Feature0103,6-Hydroxy-3-coumaranone,Condensed HC,Phenols,21.43,0.413107907,0,0
+Feature0104,6-hydroxypropylthymine,Protein,Amino acids & derivatives,,0,0.053958784,0
+Feature0105,"6-Methoxy-1,2,4-benzenetriol",Phenol,Phenols,56.14,0.449192317,0,0
+Feature0107,8-hydroxy-deoxyguanosine,Phenol,Benzoic acids,68,-0.027922396,0,0
+Feature0110,"[Similar to: (2R,3R,3aR,5R)-5,7-dimethoxy-2-(7-methoxy-2H-1,3-benzodioxol-5-yl)-3-methyl-3a-(prop-2-en-1-yl)-2,3,3a,4,5,6-hexahydro-1-benzofuran-6-one; ŒîMass: 150.0318 Da]",Phenol,Other,,0.646987904,0,0
+Feature0111,"[Similar to: (2R,3R,3aR,5R)-5,7-dimethoxy-2-(7-methoxy-2H-1,3-benzodioxol-5-yl)-3-methyl-3a-(prop-2-en-1-yl)-2,3,3a,4,5,6-hexahydro-1-benzofuran-6-one; ŒîMass: 186.0293 Da]",Phenol,Other,,0.669717381,0,0
+Feature0112,"[Similar to: (2R,3R,3aR,5R)-5,7-dimethoxy-2-(7-methoxy-2H-1,3-benzodioxol-5-yl)-3-methyl-3a-(prop-2-en-1-yl)-2,3,3a,4,5,6-hexahydro-1-benzofuran-6-one; ŒîMass: 200.0452 Da]",Phenol,Other,,0.491641793,0,0
+Feature0113,"[Similar to: (2S,4R,5S,6S,7R)-5,6,12,14-tetrahydroxy-4-(hydroxymethyl)-13-methoxy-3,8-dioxatricyclo[8.4.0.0√Ç?,√¢¬Å¬∑]tetradeca-1(14),10,12-trien-9-one; ŒîMass: -36.0235 Da]",Condensed HC,Phenols,,0,0.441602812,0
+Feature0114,"[Similar to: (2S,4R,5S,6S,7R)-5,6,12,14-tetrahydroxy-4-(hydroxymethyl)-13-methoxy-3,8-dioxatricyclo[8.4.0.0√Ç?,√¢¬Å¬∑]tetradeca-1(14),10,12-trien-9-one; ŒîMass: -36.0235 Da]",Lipid,Phenols,,0,0.501682512,0
+Feature0115,"[Similar to: (2S,4R,5S,6S,7R)-5,6,12,14-tetrahydroxy-4-(hydroxymethyl)-13-methoxy-3,8-dioxatricyclo[8.4.0.0√Ç?,√¢¬Å¬∑]tetradeca-1(14),10,12-trien-9-one; ŒîMass: 306.0929 Da]",Other,Phenols,,0,-0.433538646,0
+Feature0116,"[Similar to: (2S,4R,5S,6S,7R)-5,6,12,14-tetrahydroxy-4-(hydroxymethyl)-13-methoxy-3,8-dioxatricyclo[8.4.0.0√Ç?,√¢¬Å¬∑]tetradeca-1(14),10,12-trien-9-one; ŒîMass: 306.0930 Da]",Other,Phenols,,0,-0.413631685,0
+Feature0118,[Similar to: (3S)-N-Phenyl-3-[5-(trifluoromethyl)-1H-benzimidazol-2-yl]-1-pyrrolidinecarboxamide; ŒîMass: 83.0079 Da],Carbohydrate,Other,,-0.126352977,0.100259899,0
+Feature0118,"[Similar to: 2-(4-chlorophenyl)-2-oxoethyl 2,6-bis(trifluoromethyl)benzoate; ŒîMass: -184.0702 Da]",Carbohydrate,Other,,-0.126352977,0.100259899,0
+Feature0118,[Similar to: 3-[1-(dimethylamino)-1H-pyrrol-2-yl]-2-(2-furylcarbonyl)acrylonitrile; ŒîMass: 200.0995 Da],Carbohydrate,Other,,-0.126352977,0.100259899,0
+Feature0119,"[Similar to: 1-(3,4-dimethoxyphenethyl)-6-oxo-2-(3,4,5-trimethoxyphenyl)piperidine-3-carboxylic acid; ŒîMass: -77.0864 Da]",Phenol,Lipids,,0.472983054,0,-0.1075855
+Feature0121,"[Similar to: 2-(4-chlorophenyl)-2-oxoethyl 2,6-bis(trifluoromethyl)benzoate; ŒîMass: -116.0828 Da]",Condensed HC,Other,-0.49,0,0.100129645,0
+Feature0122,"[Similar to: 2-(4-chlorophenyl)-2-oxoethyl 2,6-bis(trifluoromethyl)benzoate; ŒîMass: -184.0702 Da]",Other,Other,-0.49,0,0.043803021,0
+Feature0123,"[Similar to: 2-(4-chlorophenyl)-2-oxoethyl 2,6-bis(trifluoromethyl)benzoate; ŒîMass: -48.0953 Da]",Other,Other,-0.49,0,0.085895579,0
+Feature0124,"[Similar to: 2-(4-chlorophenyl)-2-oxoethyl 2,6-bis(trifluoromethyl)benzoate; ŒîMass: 19.8921 Da]",Other,Other,-0.49,0,0.079753155,0
+Feature0125,"[Similar to: 2-(4-chlorophenyl)-2-oxoethyl 2,6-bis(trifluoromethyl)benzoate; ŒîMass: 87.8796 Da]",Condensed HC,Other,,0,0.099678621,0
+Feature0126,"[Similar to: 3,5-Di(acetyloxy)-2-[(acetyloxy)methyl]-6-(2H-1,2,3,4-tetraazol-5-yl)tetrahydro-2H-pyran-4-yl acetate; ŒîMass: -24.9853 Da]",Carbohydrate,Nitrated lipids,,-0.182897898,0,0
+Feature0127,"[Similar to: 3,5-Di(acetyloxy)-2-[(acetyloxy)methyl]-6-(2H-1,2,3,4-tetraazol-5-yl)tetrahydro-2H-pyran-4-yl acetate; ŒîMass: 137.0676 Da]",Protein,Nitrated lipids,,-0.172590357,-0.07875698,0
+Feature0128,[Similar to: 3-[1-(dimethylamino)-1H-pyrrol-2-yl]-2-(2-furylcarbonyl)acrylonitrile; ŒîMass: 200.0995 Da],Protein,Cyclic amines,,0,-0.158170245,0
+Feature0129,"[Similar to: 3-{[(1,5-Dimethyl-3-oxo-2-phenyl-2,3-dihydro-1H-pyrazol-4-yl)amino]carbonyl}-2-pyrazinecarboxylic acid; ŒîMass: 136.0723 Da]",Phenol,Nitrated lipids,,-0.353581611,-0.044221808,0
+Feature0130,"[Similar to: 4-[(1R,4R,6S,9S,13R,14R)-6-[(4-methoxy-6-methyl-5-{[3,4,5-trihydroxy-6-({[3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy}methyl)oxan-2-yl]oxy}oxan-2-yl)oxy]-9,13-dimethyl-17-oxotetracyclo[11.3.1.0√Ça,√Ça√¢¬Å¬∞.0√¢¬Å¬¥,√¢¬Åa]heptadecan-14-yl]-2,5-dihydrofuran-2-one; ŒîMass: -157.1657 Da]",Protein,Carbohydrates,,0,-0.302379266,0
+Feature0132,"[Similar to: 4-[(7R,11S,14S,16R)-14-[(4-methoxy-6-methyl-5-{[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-({[(2R,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy}methyl)oxan-2-yl]oxy}oxan-2-yl)oxy]-7,11-dimethyl-2-oxapentacyclo[8.8.0.0√Ça,√Çl.0√Çl,√¢¬Å¬∑.0√Ça√Ça,√Ça√¢¬Å¬∂]octadec-5-en-6-yl]-2,5-dihydrofuran-2-one; ŒîMass: -155.1501 Da]",Amino Sugar,Carbohydrates,,-0.058876403,-0.2172519,-0.2786496
+Feature0133,"[Similar to: 4-[(7R,11S,14S,16R)-14-[(4-methoxy-6-methyl-5-{[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-({[(2R,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy}methyl)oxan-2-yl]oxy}oxan-2-yl)oxy]-7,11-dimethyl-2-oxapentacyclo[8.8.0.0√Ça,√Çl.0√Çl,√¢¬Å¬∑.0√Ça√Ça,√Ça√¢¬Å¬∂]octadec-5-en-6-yl]-2,5-dihydrofuran-2-one; ŒîMass: -155.1501 Da]",Amino Sugar,Carbohydrates,,0,0,-0.1760874
+Feature0134,[Similar to: 4-[4-chloro-2-nitro-5-(1H-pyrrol-1-yl)phenyl]morpholine; ŒîMass: 182.0794 Da],Carbohydrate,Other,,-0.341971378,-0.354099569,0
+Feature0135,"[Similar to: 5-[4-Bromo-3-(trifluoromethyl)anilino]-3,3-dimethyl-5-oxopentanoic acid; ŒîMass: -90.9560 Da]",Amino Sugar,Other,,-0.30427523,0,0
+Feature0136,"[Similar to: 5-O-[(4-Acetylphenyl)carbamoyl]-1,4:3,6-dianhydro-2-deoxy-2-(5-phenyl-1H-tetrazol-1-yl)-D-glucitol; ŒîMass: -161.0514 Da]",Amino Sugar,Nitrated lipids,,0,-0.195853118,0
+Feature0137,"[Similar to: 5-O-[(4-Acetylphenyl)carbamoyl]-1,4:3,6-dianhydro-2-deoxy-2-(5-phenyl-1H-tetrazol-1-yl)-D-glucitol; ŒîMass: -161.0514 Da]",Amino Sugar,Nitrated lipids,,-0.130506753,-0.502080166,0
+Feature0138,"[Similar to: 5-O-[(4-Acetylphenyl)carbamoyl]-1,4:3,6-dianhydro-2-deoxy-2-(5-phenyl-1H-tetrazol-1-yl)-D-glucitol; ŒîMass: -161.0514 Da]",Amino Sugar,Nitrated lipids,,0,-0.338484077,0
+Feature0140,"[Similar to: 6-(2-hydroxy-3-methyl-3-{[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy}butyl)-5,7-dimethoxy-2H-chromen-2-one; ŒîMass: -88.0700 Da]",Phenol,Phenols,,-0.04828132,-0.268220473,0
+Feature0141,"[Similar to: [(2R,3S,4S,5R,6R)-6-{[(2R,3R,4S,5S,6R)-4,5-dihydroxy-6-(hydroxymethyl)-3-{[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy}oxan-2-yl]oxy}-3,4-dihydroxy-5-{[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxy}oxan-2-yl]methyl (2E)-2-methylbut-2-enoate; ŒîMass: -42.0492 Da]",Phenol,Phenols,,-0.082541292,-0.478201662,-0.4235191
+Feature0142,[Similar to: D-(+)-Glucose; ŒîMass: 45.0579 Da],Carbohydrate,Carbohydrates,,0,-0.50400838,-0.4504751
+Feature0142,[Similar to: AB-CHMINACA metabolite M7; ŒîMass: 39.9895 Da],Carbohydrate,Carbohydrates,,0,-0.50400838,-0.4504751
+Feature0143,[Similar to: Butyryl trihexyl citrate; ŒîMass: -305.2970 Da],Carbohydrate,Lipids,,0,-0.057851447,0
+Feature0145,[Similar to: D-(+)-Glucose; ŒîMass: 31.0422 Da],Carbohydrate,Carbohydrates,,0.349334784,0.281559583,0
+Feature0146,[Similar to: D-(+)-Glucose; ŒîMass: 45.0579 Da],Carbohydrate,Carbohydrates,,0.069497255,0,0
+Feature0149,[Similar to: Dimethyl phosphate; ŒîMass: 60.0212 Da],Other,Other,,0,0.42523275,0
+Feature0150,[Similar to: HQH; ŒîMass: 27.9858 Da],Other,Nitrated lipids,,0.298310132,0,0
+Feature0151,[Similar to: Irgarol 1051; ŒîMass: -56.0639 Da],Other,Other,,-0.212265107,0.358914492,0
+Feature0153,[Similar to: Muramic acid; ŒîMass: 162.0529 Da],Carbohydrate,Carboxylic acids,,-0.166190534,-0.10931576,-0.1639439
+Feature0153,[Similar to: N-Acetylneuraminic acid; ŒîMass: 1,Carbohydrate,Carboxylic acids,,-0.166190534,-0.10931576,-0.1639439
+Feature0156,[Similar to: N-Acetylneuraminic acid; ŒîMass: 120.0423 Da],Phenol,Amino acids & derivatives,,-0.272213475,-0.05835612,0
+Feature0156,[Similar to: N(6)-OH-Me-Adenosine; ŒîMass: 132.0422 Da],Phenol,Amino acids & derivatives,,-0.272213475,-0.05835612,0
+Feature0156,[Similar to: N-Acetylneuraminic acid; ŒîMass: 120.0423 Da],Phenol,Amino acids & derivatives,,-0.272213475,-0.05835612,0
+Feature0157,[Similar to: N1-phenethyl-3-(2-thienyl)acrylamide; ŒîMass: 0.0001 Da],Amino Sugar,Other,,0.377783256,0.558251985,0
+Feature0158,[Similar to: NP-004022; ŒîMass: 150.0295 Da],Phenol,Lipids,,0.528414394,0,-0.0711302
+Feature0158,[Similar to: NP-015005; ŒîMass: -441.3129 Da]-peak2,Phenol,Lipids,,0.528414394,0,-0.0711302
+Feature0159,[Similar to: NP-010746; ŒîMass: 146.0345 Da],Phenol,Phenols,,0.349589597,0,0
+Feature0160,[Similar to: NP-015005; ŒîMass: -441.3129 Da],Amino Sugar,Lipids,,-0.031647326,-0.232870915,-0.3141995
+Feature0161,[Similar to: NP-015005; ŒîMass: -441.3129 Da],Protein,Lipids,,-0.079667229,-0.319069404,-0.4304657
+Feature0162,[Similar to: NP-016129; ŒîMass: -205.0627 Da],Carbohydrate,Lipids,,-0.097404994,-0.204848899,0
+Feature0165,[Similar to: NP-016755; ŒîMass: -960.7865 Da],Carbohydrate,Lipids,,0.031405908,-0.059140177,0
+Feature0168,[Similar to: NP-020414; ŒîMass: -0.0036 Da],Protein,Lipids,,0,0.518252881,0
+Feature0169,[Similar to: RPH; ŒîMass: -155.0695 Da],Lipid,Lipids,,0,-0.309759329,0
+Feature0172,[Similar to: Trimethoprim impurity C; ŒîMass: 188.0284 Da],Phenol,Amino acids & derivatives,,0.034900952,0,0
+Feature0173,[Similar to: Valylproline; ŒîMass: 243.0478 Da],Carbohydrate,Amino acids & derivatives,,-0.192651124,-0.336897149,0
+Feature0174,Acetyl-L-carnitine,Protein,Amino acids & derivatives,,0.340914673,0,0
+Feature0175,Adenine,Unsaturated HC,Amino acids & derivatives,73.33,-0.477333653,-0.190651445,0
+Feature0175,Adenine,Unsaturated HC,Amino acids & derivatives,74.33,-0.477333653,-0.190651445,0
+Feature0177,Agmatine,Other,Amino acids & derivatives,30.77,-0.315322757,-0.3057688,0
+Feature0177,Agmatine,Other,Amino acids & derivatives,31.77,-0.315322757,-0.3057688,0
+Feature0179,AMIDINOPROLINE,Protein,Carboxylic acids,67.67,0,0,0.06123742
+Feature0180,Anhydroecgonine,Phenol,Carboxylic acids,66.67,-0.24432379,0,0
+Feature0182,arg-val,Lipid,Amino acids & derivatives,78.35,0.14286815,0.178766968,0
+Feature0183,Asparagine,Carbohydrate,Aromatic amines,7.43,0,-0.153469783,0
+Feature0184,Azobenzene,Unsaturated HC,Aromatic amines,5.43,0.453614503,0,-0.1162285
+Feature0184,Azobenzene,Unsaturated HC,Aromatic amines,6.43,0.453614503,0,-0.1162285
+Feature0185,Beauvericin,Phenol,Other,41.18,-0.090300784,0,0
+Feature0187,"beta-D-Galactopyranosyl-(1->4)-3,6-anhydro-alpha-L-galactopyranosyl-(1->3)-beta-D-galactopyranose",Carbohydrate,Lipids,59.26,-0.121086142,-0.198870401,0
+Feature0187,"beta-D-Galactopyranosyl-(1->4)-3,6-anhydro-alpha-L-galactopyranosyl-(1->3)-beta-D-galactopyranose",Carbohydrate,Lipids,60.26,-0.121086142,-0.198870401,0
+Feature0189,Bis(triaminomethyl) carbonate,Other,Nitrated lipids,2.92,-0.140025998,0,0
+Feature0190,"bis-beta-D-fructofuranose 1,2':2,3'-dianhydride",Carbohydrate,Carbohydrates,66.41,0,-0.222503113,-0.2124118
+Feature0190,"bis-beta-D-fructofuranose 1,2':2,3'-dianhydride",Carbohydrate,Carbohydrates,67.41,0,-0.222503113,-0.2124118
+Feature0191,"bis-beta-D-fructofuranose 1,2':2,3'-dianhydride",Carbohydrate,Carbohydrates,63.41,-0.102847412,-0.318148233,-0.262213
+Feature0191,"bis-beta-D-fructofuranose 1,2':2,3'-dianhydride",Carbohydrate,Carbohydrates,64.41,-0.102847412,-0.318148233,-0.262213
+Feature0191,"bis-beta-D-fructofuranose 1,2':2,3'-dianhydride",Carbohydrate,Carbohydrates,65.41,-0.102847412,-0.318148233,-0.262213
+Feature0193,Butyl glyoxylate,Protein,Lipids,91.31,0.178225952,0.471916659,0.4422934
+Feature0193,Butyl glyoxylate,Protein,Lipids,92.31,0.178225952,0.471916659,0.4422934
+Feature0193,Butyl glyoxylate,Protein,Lipids,93.31,0.178225952,0.471916659,0.4422934
+Feature0195,Caffeic acid,Phenol,Benzoic acids,71.43,0,0.471323621,0
+Feature0197,Cetrimonium,Lipid,Lipids,,-0.0697983,0,0
+Feature0198,Choline,Other,Other,,-0.098865309,0,0
+Feature0199,Choline O-Sulfate,Other,Other,,0.218996216,0,0
+Feature0200,Citric acid,Other,Carboxylic acids,,0,-0.057767697,0
+Feature0201,Cyclo(leucylprolyl),Lipid,Amino acids & derivatives,,0,0.036539674,0
+Feature0203,Cytarabine,Phenol,Cyclic amines,78.26,-0.122424181,-0.159095585,0
+Feature0203,Cytarabine,Phenol,Cyclic amines,79.26,-0.122424181,-0.159095585,0
+Feature0205,Cytonic acid A,Phenol,Lipids,,0.494732676,0,0
+Feature0206,D-Gluconic acid,Carbohydrate,Carbohydrates,100,-0.059759579,-0.110392306,-0.1248015
+Feature0206,D-Gluconic acid,Carbohydrate,Carbohydrates,101,-0.059759579,-0.110392306,-0.1248015
+Feature0206,D-Gluconic acid,Carbohydrate,Carbohydrates,102,-0.059759579,-0.110392306,-0.1248015
+Feature0207,D-Glucono-delta-lactone,Carbohydrate,Phenols,97.22,-0.198757079,-0.151316675,0
+Feature0207,D-Glucono-delta-lactone,Carbohydrate,Phenols,98.22,-0.198757079,-0.151316675,0
+Feature0208,D-Glucose 6-phosphate,Carbohydrate,Carbohydrates,,0,-0.08724822,-0.0666827
+Feature0210,D-PANTOTHENIC ACID,Amino Sugar,Nitrated lipids,,0.104179185,0,0
+Feature0211,Di(2-Tetrahydrofurylmethyl)amine,Lipid,Aromatic amines,,0,0,0.29092006
+Feature0212,Diacetylene glycol,Phenol,Other,38.43,-0.209281818,0,0
+Feature0213,"Diethyl 1-[4,6-diamino-2-(methylsulfanyl)-5-pyrimidinyl]-1,2-hydrazinedicarboxylate",Protein,Cyclic amines,12.5,0.341937797,0.338008271,0
+Feature0213,"Diethyl 1-[4,6-diamino-2-(methylsulfanyl)-5-pyrimidinyl]-1,2-hydrazinedicarboxylate",Protein,Cyclic amines,13.5,0.341937797,0.338008271,0
+Feature0215,"DL-2,6-Diaminopimelic acid",Amino Sugar,Carboxylic acids,93.33,0.223458102,0,0
+Feature0216,DL-Arginine,Other,Amino acids & derivatives,96,-0.049896106,0,0
+Feature0217,DL-Carbidopa,Phenol,Aromatic amines,66.67,0.084345224,0.107547693,0
+Feature0217,DL-Carbidopa,Phenol,Aromatic amines,67.67,0.084345224,0.107547693,0
+Feature0218,DL-Carnitine,Protein,Carboxylic acids,0,0.312485938,0.382738979,0.36801897
+Feature0219,DL-Stachydrine,Lipid,Other,,0,0.371672524,0
+Feature0221,DL-Œ±-AMINOSUBERIC ACID,Protein,Other,,0.460549563,0.139534126,0
+Feature0222,Furan,Phenol,Other,,0,0.121708937,0
+Feature0223,Glucosamine,Carbohydrate,Carbohydrates,58.33,0.257072567,0.221453121,0
+Feature0223,Glucosamine,Carbohydrate,Carbohydrates,59.33,0.257072567,0.221453121,0
+Feature0224,Glutaric acid,Carbohydrate,Carbohydrates,94.74,-0.11043763,-0.145312078,0
+Feature0224,Glutaric acid,Carbohydrate,Carbohydrates,95.74,-0.11043763,-0.145312078,0
+Feature0225,Glycerol 3-phosphate,Other,Other,,0,0.202124323,0.2430078
+Feature0226,Glycerylphosphorylethanolamine,Other,Lipids,,0.206170627,0.238684877,0
+Feature0228,Guanine,Phenol,Amino acids & derivatives,77.78,-0.404169114,0,0
+Feature0229,H-arg-glu-OH,Protein,Amino acids & derivatives,,0,0.165384249,0
+Feature0232,Hordenine,Lipid,Phenols,88.89,-0.098309258,-0.603474495,-0.6491808
+Feature0232,Hordenine,Lipid,Phenols,89.89,-0.098309258,-0.603474495,-0.6491808
+Feature0232,Hordenine,Lipid,Phenols,90.89,-0.098309258,-0.603474495,-0.6491808
+Feature0233,Hypoxanthine,Condensed HC,Cyclic amines,73.08,-0.375207964,-0.293688853,0
+Feature0234,Imidazoleacetic acid,Phenol,Benzoic acids,,0,0.289078018,0.23009516
+Feature0235,Indole-3-acetic acid,Phenol,Benzoic acids,,0,0.297452382,0.2510249
+Feature0236,Inosine,Phenol,Amino acids & derivatives,92.31,-0.256495232,0,0
+Feature0237,Inosine-5'-monophosphate (IMP),Other,Other,66.67,-0.590715438,-0.645609574,-0.7555314
+Feature0240,L-(+)-Valine,Protein,Amino acids & derivatives,42.55,0.254698097,0,0
+Feature0241,L-Alanyl-L-proline,Protein,Amino acids & derivatives,,0.144709454,0.091305286,0
+Feature0243,L-Aspartic acid,Carbohydrate,Amino acids & derivatives,,0,0.041277003,0
+Feature0244,L-Cystathionine,Amino Sugar,Amino acids & derivatives,,0,0.312029208,0
+Feature0247,L-Glutamine,Amino Sugar,Amino acids & derivatives,,0.293959943,0.341045265,0.37246975
+Feature0248,L-Histidine,Protein,Amino acids & derivatives,,-0.054693024,0.110136255,0
+Feature0249,L-Iditol,Carbohydrate,Amino acids & derivatives,,0,0.289456086,0
+Feature0250,L-Lysine,Other,Amino acids & derivatives,,0,0.080953229,0
+Feature0252,L-Pyroglutamic acid,Phenol,Amino acids & derivatives,,0,-0.296309151,-0.2705112
+Feature0253,L-Saccharopine,Protein,Amino acids & derivatives,,0.186218822,0.400546148,0
+Feature0255,L-Threonine,Carbohydrate,Amino acids & derivatives,,-0.044403609,0,0
+Feature0257,Lactamide,Other,Amino acids & derivatives,,-0.087409631,0,0
+Feature0264,Leu-arg,Lipid,Amino acids & derivatives,,0.310905099,0,0
+Feature0267,Leu-Leu,Lipid,Amino acids & derivatives,,0.135889338,0,0
+Feature0268,leu-phe,Phenol,Amino acids & derivatives,,0.102108491,0,0
+Feature0270,Levulinic acid,Amino Sugar,Carbohydrates,,0,0.215397922,0.22598022
+Feature0271,Linamarin,Amino Sugar,Other,,0.097245533,-0.129630193,0
+Feature0275,Meconin,Phenol,Benzoic acids,,-0.096902315,0.172251005,0
+Feature0276,Mephedrone,Unsaturated HC,Cyclic amines,,-0.110307725,0,0
+Feature0278,Methionine,Protein,Amino acids & derivatives,,0,0.134283793,0
+Feature0279,Methionine sulfoxide,Amino Sugar,Amino acids & derivatives,90,-0.277493154,-0.091109347,0
+Feature0280,methoxyresorcinol,Phenol,Phenols,38.95,0.63269069,0.283951337,0
+Feature0281,"Methyl (5-acetamido-2,2-dimethyl-4,6-dioxo-1,3-dioxan-5-yl)acetate",Phenol,Cyclic amines,65.29,0.07329056,0.081585336,0
+Feature0282,"Methyl 4,6-dideoxy-4-[(2,4-dihydroxybutanoyl)amino]hexopyranoside",Amino Sugar,Cyclic amines,62.93,-0.200126474,0,0
+Feature0283,"Methyl 4-hydroxy-2-methoxy-3,6-dimethylbenzoate",Phenol,Benzoic acids,46.36,0.419117563,0,0
+Feature0285,methyl N-acetylneuraminate,Carbohydrate,Benzoic acids,56.47,-0.160171728,0,0
+Feature0287,Methyl piperonyl ketone,Phenol,Other,63.64,0.457193383,0,0
+Feature0288,Methylhippuric acid,Phenol,Aromatic amines,66.13,-0.199159975,0,0
+Feature0289,Mevalonolactone,Protein,Phenols,85.45,0.269207335,0,0.40779611
+Feature0291,MFCD00025556,Amino Sugar,Nitrated lipids,100,0.10727453,0,0
+Feature0294,MFCD00634809,Phenol,Cyclic amines,31.25,-0.130674135,0,0
+Feature0295,MFCD09839908,Phenol,Aromatic amines,25,-0.166431025,0,0
+Feature0296,muramic acid,Carbohydrate,Nitrated lipids,70.59,-0.188166046,-0.148293388,0
+Feature0297,"N,N'-1,4-Butanediyldiacetamide",Lipid,Nitrated lipids,,0,-0.210274053,0
+Feature0298,"N,N-dimethyl-N'-(3-phenyl[1,2,4]triazolo[4,3-b]pyridazin-6-yl)iminoformamide",Unsaturated HC,Cyclic amines,,0.371594116,0.5095323,0.57575604
+Feature0299,N-(3-Carboxypropanoyl)-5-hydroxynorvaline,Amino Sugar,Amino acids & derivatives,,0,-0.157474321,-0.2058011
+Feature0302,"N-Acetyl-3,4,5,6-tetrahydroxynorleucine",Carbohydrate,Amino acids & derivatives,,0,0,-0.0724464
+Feature0303,N-Acetyl-D-galactosamine,Carbohydrate,Amino acids & derivatives,,0,0.190040571,0
+Feature0304,N-Acetyl-L-histidine,Phenol,Amino acids & derivatives,,0,0.082775233,0
+Feature0305,N-Acetylvaline,Protein,Amino acids & derivatives,,-0.085127771,0,0
+Feature0310,"N3,N4-Dimethyl-L-arginine",Lipid,Nitrated lipids,,-0.119302365,0,0
+Feature0312,Ne-Acetyllysine,Protein,Other,,0.089880921,0,0
+Feature0313,Nicotinamide,Phenol,Cyclic amines,,0,-0.33775437,0
+Feature0314,Nicotinic acid,Phenol,Benzoic acids,,-0.031896001,0,0
+Feature0315,Nonylbenzene,Lipid,Lipids,,0,0.364612977,0
+Feature0316,NP-003553,Lipid,Lipids,47.62,-0.079273004,0,0
+Feature0317,NP-007065,Phenol,Phenols,66.2,0.429008046,0,0
+Feature0318,NP-011220,Lipid,Amino acids & derivatives,,0,0.051571931,0
+Feature0319,NP-013538,Other,Phenols,,0,-0.147520472,-0.180025
+Feature0320,NP-014287,Lipid,Carbohydrates,65.31,0.232088038,0.09361917,0
+Feature0321,NP-016455,Protein,Cyclic amines,73.68,-0.543310801,-0.436622296,0
+Feature0321,NP-016455,Protein,Cyclic amines,74.68,-0.543310801,-0.436622296,0
+Feature0322,NP-019445,Phenol,Amino acids & derivatives,76.32,-0.086195382,0,0
+Feature0323,NP-019811,Phenol,Cyclic amines,,0,-0.27076246,0
+Feature0326,N~2~-Acetyl-L-ornithine,Protein,Carboxylic acids,100,-0.377850883,-0.264896128,0
+Feature0326,N~2~-Acetyl-L-ornithine,Protein,Carboxylic acids,101,-0.377850883,-0.264896128,0
+Feature0327,O-Ethylthreonine,Protein,Carboxylic acids,75.76,-0.437432669,0,0
+Feature0328,"Octahydro-1,6,7,8-indolizinetetrol",Protein,Cyclic amines,,0,0,0.4086376
+Feature0329,Penicillic acid,Phenol,Carboxylic acids,71.01,0,0.278119458,0
+Feature0330,"pentane-1,2,3,4,5-pentol",Carbohydrate,Other,,0,0.401937894,0.40435484
+Feature0331,Phenacetin,Phenol,Phenols,41.84,-0.09571104,0.05394057,0
+Feature0331,Phenacetin,Phenol,Phenols,42.84,-0.09571104,0.05394057,0
+Feature0332,Phloroglucinol,Phenol,Phenols,,0,-0.175501021,-0.2269446
+Feature0333,Pinolenic acid,Lipid,Lipids,,0,0.094494039,0
+Feature0334,Pipecolic acid,Protein,Carboxylic acids,52,0.107966034,0.2935168,0
+Feature0334,Pipecolic acid,Protein,Carboxylic acids,53,0.107966034,0.2935168,0
+Feature0335,Pipecolic acid,Protein,Carboxylic acids,50,-0.311365747,-0.081283671,0
+Feature0335,Pipecolic acid,Protein,Carboxylic acids,51,-0.311365747,-0.081283671,0
+Feature0337,pro-his,Phenol,Amino acids & derivatives,80.65,0.243575344,0.327812714,0
+Feature0337,pro-his,Phenol,Amino acids & derivatives,81.65,0.243575344,0.327812714,0
+Feature0338,Proline,Protein,Amino acids & derivatives,66.67,-0.096871559,-0.098600651,0
+Feature0340,propionyl adenylate,Phenol,Amino acids & derivatives,,0,-0.196931082,0
+Feature0341,Pyridoxamine,Lipid,Aromatic amines,,0,0.053115786,0
+Feature0342,Pyridoxine,Phenol,Phenols,38.71,0.125297442,0,0
+Feature0343,Pyrogallol,Phenol,Phenols,,0,-0.291824663,0
+Feature0344,pyroglutamine,Protein,Aromatic amines,,0,-0.091070181,0
+Feature0345,Pyrone,Condensed HC,Phenols,,0,-0.206370095,0
+Feature0346,Sorbic acid,Phenol,Carboxylic acids,78.08,0.266646997,0,0.45834936
+Feature0346,Sorbic acid,Phenol,Carboxylic acids,79.08,0.266646997,0,0.45834936
+Feature0347,Stavudine,Phenol,Cyclic amines,63.64,0.407529647,0,0
+Feature0348,tert-Butyl N-[1-(aminocarbonyl)-3-methylbutyl]carbamate,Lipid,Nitrated lipids,89.47,0.114666504,0,0
+Feature0349,Tetrolic Acid,Phenol,Carboxylic acids,,0,-0.195015985,-0.198442
+Feature0350,Thymine,Phenol,Amino acids & derivatives,40,-0.13650778,0,0
+Feature0351,Tiglic acid,Protein,Carboxylic acids,,0,0.294868159,0.30356351
+Feature0352,Tn Antigen,Carbohydrate,Amino acids & derivatives,55.1,0.034623367,0.159002025,0
+Feature0352,Tn Antigen,Carbohydrate,Amino acids & derivatives,56.1,0.034623367,0.159002025,0
+Feature0353,Tolycaine,Phenol,Benzoic acids,50,0.102565076,0,0
+Feature0354,Trigonelline,Phenol,Phenols,,0,-0.341479535,0
+Feature0357,val-arg,Lipid,Amino acids & derivatives,86.21,0.063378019,0,0
+Feature0358,val-his,Lipid,Amino acids & derivatives,,0,0.077048757,0
+Feature0363,Œ•-Aminobutyric acid (GABA),Protein,Amino acids & derivatives,78.26,-0.034252497,0,0
+Feature0364,Œ±-Eleostearic acid,Lipid,Carbohydrates,68.14,0.155907789,0,0.1288094
+Feature0364,Œ±-Eleostearic acid,Lipid,Carbohydrates,69.14,0.155907789,0,0.1288094
+Feature0365,Œ¥-Valerolactam,Lipid,Cyclic amines,70.45,0.123274642,0.138568561,0
+Feature0365,Œ¥-Valerolactam,Lipid,Cyclic amines,71.45,0.123274642,0.138568561,0

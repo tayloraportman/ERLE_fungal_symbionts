@@ -1,0 +1,12 @@
+﻿Study File ID,SampleID1,SampleID2,SampleID,Batch,RT Range [min],Instrument Name,Software Revision,Ref. File ID,Sample Type,Fungi
+F1,CTRL1,Area: 2,2_CTRL_CTRL.2,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Control,CTRL
+F9,F1154_1,Area: 10,10_CTRL_1154.3,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Sample,1154
+F13,F1177_1,Area: 14,14_CTRL_1177.3,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Sample,1177
+F18,F1246_1,Area: 19,19_CTRL_1246.2,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Sample,1246
+F39,CTRL2,Area: 40,40_CTRL_CTRL.3,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Control,CTRL
+F40,CTRL3,Area: 41,41_CTRL_CTRL.1,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Control,CTRL
+F45,F1154_2,Area: 46,46_CTRL_1154.2,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Sample,1154
+F46,F1177_3,Area: 47,47_CTRL_1177.1,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Sample,1177
+F56,F1246_2,Area: 57,57_CTRL_1246.3,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Sample,1246
+F58,F1154_3,Area: 59,59_CTRL_1154.1,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Sample,1154
+F59,F1246_3,Area: 60,60_CTRL_1246.1,0,0.00 - 21.00,Orbitrap Exploris Slot #139,3.1-3.1.231.6/3.1.279.9,F55,Sample,1246
